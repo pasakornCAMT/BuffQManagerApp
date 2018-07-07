@@ -14,6 +14,7 @@ class BookingItem extends Component {
     const {bookingItem, bookingRefId} = this.props;
     return (
       <View style={styles.container}>
+      <View style={styles.textContainer}>
         <Text style={styles.bookingText}>
           {bookingItem.customer}
         </Text>
@@ -23,16 +24,20 @@ class BookingItem extends Component {
         <Text style={styles.bookingText}>
           {bookingItem.timeText}
         </Text>
+        <Text style={styles.bookingText}>
+          {bookingItem.numOfCustomer} people
+        </Text>
+      </View>
         <View style={styles.buttonContainer}>
           <TouchableHighlight
           style={styles.backButton}
-          onPress={()=>{this.props.onMoveToBooking(bookingItem, bookingRefId)}}
+          onPress={()=>{this.props.onMoveBackward(bookingItem, bookingRefId)}}
           >
             <Text style={styles.textBackButton}>Back</Text>
           </TouchableHighlight>
           <TouchableHighlight
           style={styles.nextButton}
-          onPress={()=>{this.props.onMoveToArriving(bookingItem, bookingRefId)}}
+          onPress={()=>{this.props.onMoveForward(bookingItem, bookingRefId)}}
           >
             <Text style={styles.textNextButton}>Next</Text>
           </TouchableHighlight>
@@ -45,26 +50,27 @@ class BookingItem extends Component {
 const styles = StyleSheet.create({
   container:{
     backgroundColor: 'white',
-    borderColor: '#ccc',
-    borderWidth: 1,
-    padding: 5,
+    margin: 5,
+  },
+  textContainer:{
     margin: 5,
   },
   bookingText:{
     fontSize: 16,
     fontWeight: 'bold',
-
   },
   buttonContainer:{
     flexDirection: 'row',
   },
   nextButton:{
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#00ff85',
     width: '50%',
     height: 30,
   },
   backButton:{
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#e90052',
     width: '50%',
@@ -73,12 +79,10 @@ const styles = StyleSheet.create({
   textBackButton:{
     color: 'white',
     fontWeight: 'bold',
-    textAlignVertical: 'center'
   },
   textNextButton:{
     color: '#38003c',
     fontWeight: 'bold',
-    textAlignVertical: 'center'
   }
 });
 

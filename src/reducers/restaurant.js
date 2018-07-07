@@ -20,9 +20,9 @@ const restaurantState = {
   eatingDataSource: new ListView.DataSource({rowHasChanged:(r1,r2)=> r1 !== r2}),
   finishingDataSource: new ListView.DataSource({rowHasChanged:(r1,r2)=> r1 !== r2}),
   bookings:[],
-  arriving:[],
-  eating:[],
-  finishing:[],
+  arrivings:[],
+  eatings:[],
+  finishings:[],
 }
 
 export default function restaurantReducer (state = restaurantState, action){
@@ -50,6 +50,7 @@ export default function restaurantReducer (state = restaurantState, action){
         ...state,
         isFetching: false,
         bookingDataSource: new ListView.DataSource({rowHasChanged:(r1,r2)=> r1 !== r2}),
+        bookings:[],
       }
     case FETCHING_ARRIVING_LIST_SUCCESS:
       return{
@@ -63,6 +64,7 @@ export default function restaurantReducer (state = restaurantState, action){
         ...state,
         isFetching: false,
         arrivingDataSource: new ListView.DataSource({rowHasChanged:(r1,r2)=> r1 !== r2}),
+        arrivings:[],
       }
     case FETCHING_EATING_LIST_SUCCESS:
       return{
@@ -76,6 +78,7 @@ export default function restaurantReducer (state = restaurantState, action){
         ...state,
         isFetching: false,
         eatingDataSource: new ListView.DataSource({rowHasChanged:(r1,r2)=> r1 !== r2}),
+        eatings:[],
       }
     case FETCHING_FINISHING_LIST_SUCCESS:
       return{
@@ -89,6 +92,7 @@ export default function restaurantReducer (state = restaurantState, action){
         ...state,
         isFetching: false,
         finishingDataSource: new ListView.DataSource({rowHasChanged:(r1,r2)=> r1 !== r2}),
+        finishings:[],
       }
     default:
       return state;

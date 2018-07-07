@@ -30,24 +30,63 @@ class ListViewBoard extends Component {
     return(
       <BookingItem
       bookingItem={bookingItem}
-      onMoveToArriving={this.onMoveToArriving.bind(this)}
-      onMoveToBooking={this.onMoveToBooking.bind(this)}
+      onMoveForward={this.onMoveForward.bind(this)}
+      onMoveBackward={this.onMoveBackward.bind(this)}
       bookingRefId={bookingRefId}/>
     )
   }
 
-  onMoveToArriving(booking, id){
+  onMoveForward(booking, id){
     const bookingRef = FirebaseService.child('bookings').child('users').child('1').child(id);
+    let bookingStatus = '';
+    switch (booking.status) {
+      case 'booking':
+        bookingStatus = 'arriving'
+        break;
+      case 'arriving':
+        bookingStatus = 'eating'
+        break;
+      case 'eating':
+        bookingStatus = 'finishing'
+        break;
+      default:
+        bookingStatus = booking.status
+        break;
+    }
     bookingRef.update({
-      status: 'arriving'
+      status: bookingStatus
     });
   }
 
-  onMoveToBooking(booking, id){
+  onMoveBackward(booking, id){
     const bookingRef = FirebaseService.child('bookings').child('users').child('1').child(id);
+    let bookingStatus = '';
+    switch (booking.status) {
+      case 'arriving':
+        bookingStatus = 'booking'
+        break;
+      case 'eating':
+        bookingStatus = 'arriving'
+        break;
+      case 'finishing':
+        bookingStatus = 'eating'
+        break;
+      default:
+        bookingStatus = booking.status
+        break;
+    }
     bookingRef.update({
-      status: 'booking'
+      status: bookingStatus
     });
+  }
+
+  getEachColumnLength(list){
+    try {
+      let length = Object.keys(list).length;
+      return length
+    } catch (e) {
+      return 0
+    }
   }
 
   render() {
@@ -56,12 +95,16 @@ class ListViewBoard extends Component {
       arrivingDataSource,
       eatingDataSource,
       finishingDataSource,
+      bookings,
+      arrivings,
+      eatings,
+      finishings
     } = this.props.restaurant
     return (
       <ScrollView horizontal={true}>
         <View style={styles.container}>
           <View style={styles.columnContainer}>
-            <Text style={styles.boardHeader}>Booking</Text>
+            <Text style={styles.boardHeader}>Booking({this.getEachColumnLength(bookings)})</Text>
             <ListView
               dataSource={bookingDataSource}
               renderRow={this.renderRow.bind(this)}
@@ -69,7 +112,7 @@ class ListViewBoard extends Component {
             />
           </View>
           <View style={styles.columnContainer}>
-            <Text style={styles.boardHeader}>Arriving</Text>
+            <Text style={styles.boardHeader}>Arriving({this.getEachColumnLength(arrivings)})</Text>
             <ListView
               dataSource={arrivingDataSource}
               renderRow={this.renderRow.bind(this)}
@@ -77,7 +120,7 @@ class ListViewBoard extends Component {
             />
           </View>
           <View style={styles.columnContainer}>
-            <Text style={styles.boardHeader}>Eating</Text>
+            <Text style={styles.boardHeader}>Eating({this.getEachColumnLength(eatings)})</Text>
             <ListView
               dataSource={eatingDataSource}
               renderRow={this.renderRow.bind(this)}
@@ -85,7 +128,7 @@ class ListViewBoard extends Component {
             />
           </View>
           <View style={styles.columnContainer}>
-            <Text style={styles.boardHeader}>Finishing</Text>
+            <Text style={styles.boardHeader}>Finishing({this.getEachColumnLength(finishings)})</Text>
             <ListView
               dataSource={finishingDataSource}
               renderRow={this.renderRow.bind(this)}
@@ -105,17 +148,18 @@ const styles = StyleSheet.create({
   boardHeader:{
     backgroundColor: '#38003c',
     borderColor: '#cccccc',
-    borderWidth: 1,
+    borderBottomWidth: 1,
     color: 'white',
     textAlign: 'center',
     fontWeight: 'bold',
-    height: 30,
+    padding: 5,
   },
   columnContainer:{
     width: 200,
     borderWidth: 1,
     borderColor: '#c0d6e4',
-    backgroundColor: '#38003c'
+    backgroundColor: '#38003c',
+    alignContent: 'center',
   }
 });
 
