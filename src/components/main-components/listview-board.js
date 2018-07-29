@@ -1,7 +1,7 @@
 'use strict';
 import React, { Component } from 'react';
 import BookingItem from '../sub-components/booking-item'
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import FirebaseService from '../../services/firebase-service'
 import {
   fetchBookingFromFirebase,
@@ -15,28 +15,30 @@ import {
   Text,
   ListView,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 
 class ListViewBoard extends Component {
 
-  componentWillMount(){
+  componentWillMount() {
     this.props.fetchBookingFromFirebase();
     this.props.fetchArrivingFromFirebase();
     this.props.fetchEatingFromFirebase();
     this.props.fetchFinishingFromFirebase();
   }
 
-  renderRow(bookingItem, sectionId, bookingRefId){
-    return(
+  renderRow(bookingItem, sectionId, bookingRefId) {
+    return (
       <BookingItem
-      bookingItem={bookingItem}
-      onMoveForward={this.onMoveForward.bind(this)}
-      onMoveBackward={this.onMoveBackward.bind(this)}
-      bookingRefId={bookingRefId}/>
+        bookingItem={bookingItem}
+        onMoveForward={this.onMoveForward.bind(this)}
+        onMoveBackward={this.onMoveBackward.bind(this)}
+        bookingRefId={bookingRefId}
+        onPressBookingItem={this.props.onPressBookingItem} />
     )
   }
 
-  onMoveForward(booking, id){
+  onMoveForward(booking, id) {
     const bookingRef = FirebaseService.child('bookings').child('users').child('1').child(id);
     let bookingStatus = '';
     switch (booking.status) {
@@ -58,7 +60,7 @@ class ListViewBoard extends Component {
     });
   }
 
-  onMoveBackward(booking, id){
+  onMoveBackward(booking, id) {
     const bookingRef = FirebaseService.child('bookings').child('users').child('1').child(id);
     let bookingStatus = '';
     switch (booking.status) {
@@ -80,7 +82,7 @@ class ListViewBoard extends Component {
     });
   }
 
-  getEachColumnLength(list){
+  getEachColumnLength(list) {
     try {
       let length = Object.keys(list).length;
       return length
@@ -98,54 +100,63 @@ class ListViewBoard extends Component {
       bookings,
       arrivings,
       eatings,
-      finishings
-    } = this.props.restaurant
+      finishings,
+      isFetching,
+    } = this.props.bookingBoard
     return (
       <ScrollView horizontal={true}>
-        <View style={styles.container}>
-          <View style={styles.columnContainer}>
-            <Text style={styles.boardHeader}>Booking({this.getEachColumnLength(bookings)})</Text>
-            <ListView
-              dataSource={bookingDataSource}
-              renderRow={this.renderRow.bind(this)}
-              enableEmptySections = {true}
-            />
-          </View>
-          <View style={styles.columnContainer}>
-            <Text style={styles.boardHeader}>Arriving({this.getEachColumnLength(arrivings)})</Text>
-            <ListView
-              dataSource={arrivingDataSource}
-              renderRow={this.renderRow.bind(this)}
-              enableEmptySections = {true}
-            />
-          </View>
-          <View style={styles.columnContainer}>
-            <Text style={styles.boardHeader}>Eating({this.getEachColumnLength(eatings)})</Text>
-            <ListView
-              dataSource={eatingDataSource}
-              renderRow={this.renderRow.bind(this)}
-              enableEmptySections = {true}
-            />
-          </View>
-          <View style={styles.columnContainer}>
-            <Text style={styles.boardHeader}>Finishing({this.getEachColumnLength(finishings)})</Text>
-            <ListView
-              dataSource={finishingDataSource}
-              renderRow={this.renderRow.bind(this)}
-              enableEmptySections = {true}
-            />
-          </View>
-        </View>
+        {
+          isFetching ? (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color="tomato" style={styles.indicator}/>
+            </View>
+          ) : (
+              <View style={styles.container}>
+                <View style={styles.columnContainer}>
+                  <Text style={styles.boardHeader}>Booking({this.getEachColumnLength(bookings)})</Text>
+                  <ListView
+                    dataSource={bookingDataSource}
+                    renderRow={this.renderRow.bind(this)}
+                    enableEmptySections={true}
+                  />
+                </View>
+                <View style={styles.columnContainer}>
+                  <Text style={styles.boardHeader}>Arriving({this.getEachColumnLength(arrivings)})</Text>
+                  <ListView
+                    dataSource={arrivingDataSource}
+                    renderRow={this.renderRow.bind(this)}
+                    enableEmptySections={true}
+                  />
+                </View>
+                <View style={styles.columnContainer}>
+                  <Text style={styles.boardHeader}>Eating({this.getEachColumnLength(eatings)})</Text>
+                  <ListView
+                    dataSource={eatingDataSource}
+                    renderRow={this.renderRow.bind(this)}
+                    enableEmptySections={true}
+                  />
+                </View>
+                <View style={styles.columnContainer}>
+                  <Text style={styles.boardHeader}>Finishing({this.getEachColumnLength(finishings)})</Text>
+                  <ListView
+                    dataSource={finishingDataSource}
+                    renderRow={this.renderRow.bind(this)}
+                    enableEmptySections={true}
+                  />
+                </View>
+              </View>
+            )
+        }
       </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container:{
+  container: {
     flexDirection: 'row',
   },
-  boardHeader:{
+  boardHeader: {
     backgroundColor: '#38003c',
     borderColor: '#cccccc',
     borderBottomWidth: 1,
@@ -154,23 +165,29 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     padding: 5,
   },
-  columnContainer:{
+  columnContainer: {
     width: 200,
     borderWidth: 1,
     borderColor: '#c0d6e4',
     backgroundColor: '#38003c',
     alignContent: 'center',
+  },
+  loadingContainer: {
+    alignContent: 'center',
+  },
+  indicator:{
+   
   }
 });
 
-function mapStateToProps(state){
-  return{
-    restaurant: state.restaurant
+function mapStateToProps(state) {
+  return {
+    bookingBoard: state.bookingBoard
   }
 }
 
-function mapDispatchToProps (dispatch){
-  return{
+function mapDispatchToProps(dispatch) {
+  return {
     fetchBookingFromFirebase: () => dispatch(fetchBookingFromFirebase()),
     fetchArrivingFromFirebase: () => dispatch(fetchArrivingFromFirebase()),
     fetchEatingFromFirebase: () => dispatch(fetchEatingFromFirebase()),

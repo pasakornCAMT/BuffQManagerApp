@@ -12,7 +12,7 @@ import {
 } from '../constants/constants'
 import {ListView} from 'react-native'
 
-const restaurantState = {
+const bookingBoardState = {
   isFetching: false,
   isFetchingFail: false,
   bookingDataSource: new ListView.DataSource({rowHasChanged:(r1,r2)=> r1 !== r2}),
@@ -25,7 +25,7 @@ const restaurantState = {
   finishings:[],
 }
 
-export default function restaurantReducer (state = restaurantState, action){
+export default function bookingBoardReducer (state = bookingBoardState, action){
   switch (action.type) {
     case FETCHING_BOOKING_LIST:
       return{

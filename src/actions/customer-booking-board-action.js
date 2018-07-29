@@ -10,7 +10,6 @@ import {
   FETCHING_FINISHING_LIST_SUCCESS,
   NO_FINISHING_LIST,
 } from '../constants/constants'
-
 import FirebaseService from '../services/firebase-service'
 
 export function fetchBookingFromFirebase(){
@@ -20,15 +19,12 @@ export function fetchBookingFromFirebase(){
       FirebaseService.child('bookings').child('users').child('1')
       .orderByChild('status').equalTo('booking').on('value',(snap)=>{
         if(snap.val() == null){
-          console.log('null');
           dispatch(noBookingList())
         }else{
-          console.log('fetchBookingSuccess');
           dispatch(getBookingListSuccess(snap.val()))
         }
       })
     } catch (e) {
-      console.log('fetchBookingFail');
       dispatch(getBookingListFailure())
     }
   }
@@ -65,10 +61,8 @@ export function fetchArrivingFromFirebase(){
       FirebaseService.child('bookings').child('users').child('1')
       .orderByChild('status').equalTo('arriving').on('value',(snap)=>{
         if(snap.val() == null){
-          console.log('null');
           dispatch(noArringList())
         }else{
-          console.log('fetchSuccess');
           dispatch(getArrivingListSuccess(snap.val()))
         }
       })
@@ -97,10 +91,8 @@ export function fetchEatingFromFirebase(){
       FirebaseService.child('bookings').child('users').child('1')
       .orderByChild('status').equalTo('eating').on('value',(snap)=>{
         if(snap.val() == null){
-          console.log('null');
           dispatch(noEatingList())
         }else{
-          console.log('fetchSuccess');
           dispatch(getEatingListSuccess(snap.val()))
         }
       })
@@ -129,10 +121,8 @@ export function fetchFinishingFromFirebase(){
       FirebaseService.child('bookings').child('users').child('1')
       .orderByChild('status').equalTo('finishing').on('value',(snap)=>{
         if(snap.val() == null){
-          console.log('null');
           dispatch(noFinishingList())
         }else{
-          console.log('fetchSuccess');
           dispatch(getFinishingListSuccess(snap.val()))
         }
       })

@@ -3,7 +3,9 @@ import {StackNavigator, TabNavigator, TabBarBottom} from 'react-navigation';
 import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomerBookingBoard from '../components/screens/customer-booking-board';
+import BookingDetail from '../components/screens/booking-detail'
 import RestaurantDetail from '../components/screens/restaurant-detail';
+import AddCustomerBooking from '../components/screens/add-customer-booking';
 
 const CustomerBookingBoardStack = StackNavigator({
     CustomerBookingBoard: {
@@ -12,6 +14,18 @@ const CustomerBookingBoardStack = StackNavigator({
         header: null
       }
     },
+    BookingDetail:{
+      screen: BookingDetail,
+    }
+})
+
+const AddCustomerBookingStack = StackNavigator({
+  AddCustomerBooking: {
+    screen: AddCustomerBooking,
+    navigationOptions: {
+      header: null
+    }
+  }
 })
 
 const RestaurantDetailStack = StackNavigator({
@@ -26,6 +40,7 @@ const RestaurantDetailStack = StackNavigator({
 
 export default createBottomTabNavigator({
     Board: {screen: CustomerBookingBoardStack},
+    AddBooking: {screen: AddCustomerBookingStack},
     Restaurant: {screen: RestaurantDetailStack},
 },
 {
@@ -37,6 +52,8 @@ export default createBottomTabNavigator({
             iconName = `ios-list-box${focused ? '' : '-outline'}`;
           } else if (routeName === 'Restaurant') {
             iconName = `ios-home${focused ? '' : '-outline'}`;
+          } else if(routeName === 'AddBooking') {
+            iconName = `ios-add-circle${focused ? '' : '-outline'}`;
           }
           return <Ionicons name={iconName} size={25} color={tintColor}/>
         },
