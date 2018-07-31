@@ -8,7 +8,7 @@ class BookingFormData extends Component {
             <View>
                 <View style={styles.detailContainer}>
                     <Text style={styles.left}>Booking ID: </Text>
-                    <Text style={styles.right}>{bookingItem.refId}</Text>
+                    <Text style={styles.right}>{bookingItem.id}</Text>
                 </View>
                 <View style={styles.detailContainer}>
                     <Text style={styles.left}>Date: </Text>
@@ -26,6 +26,16 @@ class BookingFormData extends Component {
                     <Text style={styles.left}>Customer: </Text>
                     <Text style={styles.right}>{bookingItem.numOfCustomer} people</Text>
                 </View>
+                <View style={styles.detailContainer}>
+                    <Text style={styles.price}>{bookingItem.totalPrice} THB.- </Text>
+                    {
+                        bookingItem.payment ? (
+                            <Text style={styles.paid}>PAID</Text>
+                        ):(
+                            <Text style={styles.notPaid}>NOT PAID</Text>
+                        )
+                    }
+                </View>
             </View>
         );
     }
@@ -42,6 +52,21 @@ const styles = StyleSheet.create({
     right: {
         fontSize: 16,
         marginLeft: 10,
+    },
+    price:{
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#38003c'
+    },
+    paid:{
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: "green"
+    },
+    notPaid:{
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: "red"
     }
 });
 

@@ -21,7 +21,8 @@ class RestaurantDetail extends Component {
         <Divider style={styles.divider}/>
         <Button
           title = 'Open Restaurant'
-          backgroundColor = 'tomato'
+          backgroundColor = '#00ff85'
+          color = '#38003c'
         />
         <RestaurantFormData restaurant={restaurant}/>
       </View>
