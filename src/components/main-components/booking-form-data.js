@@ -11,6 +11,14 @@ class BookingFormData extends Component {
                     <Text style={styles.right}>{bookingItem.id}</Text>
                 </View>
                 <View style={styles.detailContainer}>
+                    <Text style={styles.left}>Name: </Text>
+                    <Text style={styles.right}>{bookingItem.customer}</Text>
+                </View>
+                <View style={styles.detailContainer}>
+                    <Text style={styles.left}>Phone: </Text>
+                    <Text style={styles.right}>{bookingItem.phone}</Text>
+                </View>
+                <View style={styles.detailContainer}>
                     <Text style={styles.left}>Date: </Text>
                     <Text style={styles.right}>{bookingItem.dateText}</Text>
                 </View>

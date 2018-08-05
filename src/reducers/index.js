@@ -2,6 +2,9 @@ import { combineReducers } from 'redux'
 import bookingBoard from './booking-board-reducer'
 import restaurant from './restaurant-reducer'
 import bookingDetail from './booking-detail-reducer'
+import addBooking from './add-booking-reducer'
+import tableLayout from './table-layout-reducer'
+import tableDetail from './table-detail-reducer'
 
 //For dismiss the warning message
 import { YellowBox } from 'react-native'
@@ -12,6 +15,9 @@ const rootReducer = combineReducers({
     bookingBoard,
     restaurant,
     bookingDetail,
+    addBooking,
+    tableLayout,
+    tableDetail,
 })
 
 export default rootReducer

@@ -10,6 +10,11 @@ class RestaurantFormData extends Component {
                     <Text style={styles.left}>Restaurant Name</Text>
                     <Text style={styles.right}>{restaurant.name}</Text>
                 </View>
+                <View style={styles.container}>
+                    <Text style={styles.left}>Status</Text>
+                    <Text style={styles.right}>{restaurant.status}</Text>
+                </View>
+
             </View>
         );
     }
@@ -20,11 +25,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: 10,
     },
-    left:{
+    left: {
         fontWeight: 'bold',
         fontSize: 16,
     },
-    right:{
+    right: {
         fontSize: 16,
         marginLeft: 10,
     }

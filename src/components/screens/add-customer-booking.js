@@ -18,5 +18,7 @@ const styles = StyleSheet.create({
     }
 });
 
-export default AddCustomerBooking;
+
+export default AddCustomerBooking
+
 

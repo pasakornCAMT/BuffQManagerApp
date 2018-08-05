@@ -59,7 +59,8 @@ export function selectDrink(){
 
 export function recordPrice(price){
     return{
-        type: RECORD_PRICE
+        type: RECORD_PRICE,
+        price,
     }
 }
 

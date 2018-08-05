@@ -6,6 +6,8 @@ import CustomerBookingBoard from '../components/screens/customer-booking-board';
 import BookingDetail from '../components/screens/booking-detail'
 import RestaurantDetail from '../components/screens/restaurant-detail';
 import AddCustomerBooking from '../components/screens/add-customer-booking';
+import TablesLayout from '../components/screens/tables-layout';
+import TableDetail from '../components/screens/table-detail';
 
 const CustomerBookingBoardStack = StackNavigator({
     CustomerBookingBoard: {
@@ -17,6 +19,18 @@ const CustomerBookingBoardStack = StackNavigator({
     BookingDetail:{
       screen: BookingDetail,
     }
+})
+
+const TablesLayoutStack = StackNavigator({
+  TablesLayout: {
+    screen: TablesLayout,
+    navigationOptions: {
+      header: null
+    }
+  },
+  TableDetail:{
+    screen: TableDetail,
+  }
 })
 
 const AddCustomerBookingStack = StackNavigator({
@@ -40,6 +54,7 @@ const RestaurantDetailStack = StackNavigator({
 
 export default createBottomTabNavigator({
     Board: {screen: CustomerBookingBoardStack},
+    Tables: {screen: TablesLayoutStack},
     AddBooking: {screen: AddCustomerBookingStack},
     Restaurant: {screen: RestaurantDetailStack},
 },
@@ -50,6 +65,8 @@ export default createBottomTabNavigator({
           let iconName;
           if(routeName === 'Board') {
             iconName = `ios-list-box${focused ? '' : '-outline'}`;
+          } else if (routeName === 'Tables'){
+            iconName = `md-square${focused ? '' : '-outline'}`;
           } else if (routeName === 'Restaurant') {
             iconName = `ios-home${focused ? '' : '-outline'}`;
           } else if(routeName === 'AddBooking') {

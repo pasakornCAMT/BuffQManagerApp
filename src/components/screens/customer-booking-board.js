@@ -9,11 +9,15 @@ import {
   Text,
   Alert
 } from 'react-native';
-import {
-  setBookingDetailState,
-} from '../../actions/booking-detail-action'
+import {setBookingDetailState,} from '../../actions/booking-detail-action'
+import {fetchRestaurantFromFirebase} from '../../actions/restaurant-action'
+import {fetchTableLayoutFromFirebase} from '../../actions/table-layout-action'
 
 class CustomerBookingBoard extends Component {
+  componentWillMount(){
+    this.props.fetchRestaurantFromFirebase()
+    this.props.fetchTableLayoutFromFirebase()
+  }
   onPressBookingItem(bookingItem){
     this.props.setBookingDetailState(bookingItem)
     this.navigateToBookingDetail()
@@ -32,18 +36,26 @@ class CustomerBookingBoard extends Component {
 }
 
 const styles = StyleSheet.create({
-
+  container:{
+    flex: 1, 
+    alignItems: 'center',
+    justifyContent: 'center', 
+  }
 });
 
 function mapStateToProps(state) {
   return {
-      bookingDetail: state.bookingDetail
+      bookingDetail: state.bookingDetail,
+      restaurant: state.restaurant,
+      tableLayout: state.tableLayout,
   }
 }
 
 function mapDispatchToProps (dispatch){
   return{
-    setBookingDetailState: (bookingItem) => dispatch(setBookingDetailState(bookingItem))
+    setBookingDetailState: (bookingItem) => dispatch(setBookingDetailState(bookingItem)),
+    fetchRestaurantFromFirebase: () => dispatch(fetchRestaurantFromFirebase()),
+    fetchTableLayoutFromFirebase: () => dispatch(fetchTableLayoutFromFirebase())
   }
 }
 

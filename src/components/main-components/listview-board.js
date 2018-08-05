@@ -108,7 +108,7 @@ class ListViewBoard extends Component {
         {
           isFetching ? (
             <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="tomato" style={styles.indicator}/>
+              <ActivityIndicator size="large" color="#38003c" style={styles.indicator}/>
             </View>
           ) : (
               <View style={styles.container}>
@@ -173,7 +173,8 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   loadingContainer: {
-    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center', 
   },
   indicator:{
    

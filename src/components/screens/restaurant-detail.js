@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import { View, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import { Button, Text, Divider} from 'react-native-elements'
-import {
-  fetchRestaurantFromFirebase
-} from '../../actions/restaurant-action'
 import RestaurantFormData from '../main-components/restaurant-form-data';
+import { closeRestaurant, openRestaurant } from '../../actions/firebase-action'
 
 class RestaurantDetail extends Component {
 
-  componentWillMount(){
-    this.props.fetchRestaurantFromFirebase()
+  openRestaurant(){
+    openRestaurant()
+  }
+
+  closeRestaurant(){
+    closeRestaurant()
   }
 
   render() {
@@ -19,11 +21,24 @@ class RestaurantDetail extends Component {
       <View style={styles.container}>
         <Text h4>Console</Text>
         <Divider style={styles.divider}/>
-        <Button
-          title = 'Open Restaurant'
-          backgroundColor = '#00ff85'
-          color = '#38003c'
-        />
+        {
+          restaurant.status == 'open' ? (
+            <Button
+            title = 'Close Restaurant'
+            backgroundColor = 'red'
+            color = 'white'
+            onPress = {this.closeRestaurant.bind(this)}
+            />
+          ):(
+            <Button
+            title = 'Open Restaurant'
+            backgroundColor = '#00ff85'
+            color = '#38003c'
+            onPress = {this.openRestaurant.bind(this)}
+            />
+          )
+        }
+
         <RestaurantFormData restaurant={restaurant}/>
       </View>
     );
@@ -46,11 +61,5 @@ function mapStateToProps(state){
   }
 }
 
-function mapDispatchToProps(dispatch){
-  return{
-    fetchRestaurantFromFirebase: () => dispatch(fetchRestaurantFromFirebase())
-  }
-}
+export default connect(mapStateToProps)(RestaurantDetail)
 
-export default connect(mapStateToProps, mapDispatchToProps)(RestaurantDetail)
-//export default RestaurantDetail;
