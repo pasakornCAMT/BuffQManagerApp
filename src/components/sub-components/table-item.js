@@ -7,7 +7,7 @@ class TableItem extends Component {
         return (
             <View>
                 <TouchableHighlight onPress={()=>this.props.onPressTableItem(item)}>
-                <View style={[styles.itemContainer, { backgroundColor: 'transparent' }]}>
+                <View style={[styles.itemContainer, { backgroundColor: item.available ? 'transparent':'tomato' }]}>
                     <Text style={styles.itemName}>Table: {item.table}</Text>
                     <Text style={styles.itemCode}>Seat: {item.seat}</Text>
                 </View>

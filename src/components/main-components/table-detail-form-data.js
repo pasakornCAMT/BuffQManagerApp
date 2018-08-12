@@ -1,29 +1,31 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Picker, Alert } from 'react-native';
 import { connect } from 'react-redux';
 
 class TableDetailFormData extends Component {
     render() {
         const { tableItem } = this.props.tableDetail
         return (
-            <View>
-                <View style={styles.container}>
-                    <Text style={styles.left}>Table: </Text>
-                    <Text style={styles.right}>{tableItem.table}</Text>
+            <ScrollView>
+                <View>
+                    <View style={styles.container}>
+                        <Text style={styles.left}>Table: </Text>
+                        <Text style={styles.right}>{tableItem.table}</Text>
+                    </View>
+                    <View style={styles.container}>
+                        <Text style={styles.left}>Booking ID: </Text>
+                        <Text style={styles.right}>{tableItem.bookingId}</Text>
+                    </View>
+                    <View style={styles.container}>
+                        <Text style={styles.left}>Customer: </Text>
+                        <Text style={styles.right}>{tableItem.customer}</Text>
+                    </View>
+                    <View style={styles.container}>
+                        <Text style={styles.left}>Seats: </Text>
+                        <Text style={styles.right}>{tableItem.seat}</Text>
+                    </View>
                 </View>
-                <View style={styles.container}>
-                    <Text style={styles.left}>Booking ID: </Text>
-                    <Text style={styles.right}>{tableItem.bookingId}</Text>
-                </View>
-                <View style={styles.container}>
-                    <Text style={styles.left}>Customer: </Text>
-                    <Text style={styles.right}>{tableItem.customer}</Text>
-                </View>
-                <View style={styles.container}>
-                    <Text style={styles.left}>Seats: </Text>
-                    <Text style={styles.right}>{tableItem.seat}</Text>
-                </View>
-            </View>
+            </ScrollView>
         );
     }
 }
@@ -40,13 +42,16 @@ const styles = StyleSheet.create({
     right: {
         fontSize: 16,
         marginLeft: 10,
-    }
+    },
 });
 
 function mapStateToProps(state) {
     return {
-        tableDetail: state.tableDetail
+        tableDetail: state.tableDetail,
+        bookingBoard: state.bookingBoard
     }
 }
+
+
 
 export default connect(mapStateToProps)(TableDetailFormData);

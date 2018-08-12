@@ -52,3 +52,28 @@ export function openRestaurant() {
         status: 'open'
     })
 }
+export function assignBookingToTable(booking, id){
+    const resId = '0'
+    FirebaseService.child('tables').child(resId).child(id).update({
+        bookingId: booking.id,
+        customer: booking.customer,
+        customer_phone: booking.customer+'_'+booking.phone,
+        available: false
+    })
+}
+
+export function changeStatusToEating(id){
+    FirebaseService.child('bookings').child('users').child('1').child(id).update({
+        status: 'eating'
+    })
+}
+
+export function resetAssign(tableId){
+    const resId = '0'
+    FirebaseService.child('tables').child(resId).child(tableId).update({
+        available: true,
+        bookingId: '',
+        customer: '',
+        customer_phone: 'empty',
+    })
+}
