@@ -11,7 +11,8 @@ import {
 
 class BookingItem extends Component {
   render() {
-    const { bookingItem, bookingRefId } = this.props;
+    const { bookingItem } = this.props;
+
     return (
       <View style={styles.container}>
         <TouchableHighlight onPress={()=>{this.props.onPressBookingItem(bookingItem)}}>
@@ -33,13 +34,13 @@ class BookingItem extends Component {
         <View style={styles.buttonContainer}>
           <TouchableHighlight
             style={styles.backButton}
-            onPress={() => { this.props.onMoveBackward(bookingItem, bookingRefId) }}
+            onPress={() => { this.props.onPressBack(bookingItem) }}
           >
             <Text style={styles.textBackButton}>Back</Text>
           </TouchableHighlight>
           <TouchableHighlight
             style={styles.nextButton}
-            onPress={() => { this.props.onMoveForward(bookingItem, bookingRefId) }}
+            onPress={() => { this.props.onPressNext(bookingItem) }}
           >
             <Text style={styles.textNextButton}>Next</Text>
           </TouchableHighlight>
@@ -52,7 +53,9 @@ class BookingItem extends Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    margin: 5,
+    borderRadius: 4,
+    margin: 8,
+    elevation: 2,
   },
   textContainer: {
     margin: 5,
@@ -63,6 +66,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
+    marginBottom: 5,
   },
   nextButton: {
     justifyContent: 'center',

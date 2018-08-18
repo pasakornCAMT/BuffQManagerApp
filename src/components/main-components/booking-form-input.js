@@ -23,9 +23,10 @@ class BookingFormInput extends Component {
         const hasChild = this.props.restaurant.restaurant.childPrice
         const hasDrink = this.props.restaurant.restaurant.drink
         const { id } = this.props.restaurant.restaurant
-        //insertNewBookingToFirebase(addBooking, hasChild, hasDrink, id)
+        const price = this.calculateTotalPrice()
+        insertNewBookingToFirebase(addBooking, hasChild, hasDrink, id, price)
     }
-    totalPrice() {
+    calculateTotalPrice() {
         const { numOfCustomer, numOfAdult, numOfChild } = this.props.addBooking
         const isSelectDrink = this.props.addBooking.drink
         const { drink, childPrice, price } = this.props.restaurant.restaurant
@@ -147,7 +148,6 @@ class BookingFormInput extends Component {
                     {
                         addBooking.drink ? (<Text style={{ paddingLeft: 10 }}>+{restaurant.drink} THB per each</Text>) : null
                     }
-                    <Text style={styles.price}>Price: {this.totalPrice()} THB</Text>
                     <View style={styles.button}>
                         <Button
                             backgroundColor="#00ff85"

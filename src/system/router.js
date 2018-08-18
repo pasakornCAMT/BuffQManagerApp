@@ -8,6 +8,7 @@ import RestaurantDetail from '../components/screens/restaurant-detail';
 import AddCustomerBooking from '../components/screens/add-customer-booking';
 import TablesLayout from '../components/screens/tables-layout';
 import TableDetail from '../components/screens/table-detail';
+import DataHistory from '../components/screens/data-history';
 
 const CustomerBookingBoardStack = StackNavigator({
     CustomerBookingBoard: {
@@ -42,6 +43,15 @@ const AddCustomerBookingStack = StackNavigator({
   }
 })
 
+const DataHistoryStack = StackNavigator({
+  DataHistory: {
+    screen: DataHistory,
+    navigationOptions: {
+      header: null
+    }
+  }
+})
+
 const RestaurantDetailStack = StackNavigator({
     RestaurantDetail: {
       screen: RestaurantDetail,
@@ -56,6 +66,7 @@ export default createBottomTabNavigator({
     Board: {screen: CustomerBookingBoardStack},
     Tables: {screen: TablesLayoutStack},
     AddBooking: {screen: AddCustomerBookingStack},
+    History: {screen: DataHistoryStack},
     Restaurant: {screen: RestaurantDetailStack},
 },
 {
@@ -71,6 +82,8 @@ export default createBottomTabNavigator({
             iconName = `ios-home${focused ? '' : '-outline'}`;
           } else if(routeName === 'AddBooking') {
             iconName = `ios-add-circle${focused ? '' : '-outline'}`;
+          } else if (routeName === 'History'){
+            iconName = `ios-clock${focused ? '' : '-outline'}`;
           }
           return <Ionicons name={iconName} size={25} color={tintColor}/>
         },

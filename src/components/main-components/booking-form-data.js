@@ -6,7 +6,7 @@ class BookingFormData extends Component {
     render() {
         const { bookingItem } = this.props
         return (
-                <View>
+                <View style={{marginRight: 5}}>
                     <View style={styles.detailContainer}>
                         <Text style={styles.left}>Booking ID: </Text>
                         <Text style={styles.right}>{bookingItem.id}</Text>

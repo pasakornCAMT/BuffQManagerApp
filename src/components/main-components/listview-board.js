@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import BookingItem from '../sub-components/booking-item'
 import { connect } from 'react-redux';
-import FirebaseService from '../../services/firebase-service'
 import {
   fetchBookingFromFirebase,
   fetchArrivingFromFirebase,
@@ -17,6 +16,7 @@ import {
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
+import { changeStatusWhenPressNext, changeStatusWhenPressBack } from '../../actions/firebase-action';
 
 class ListViewBoard extends Component {
 
@@ -27,59 +27,22 @@ class ListViewBoard extends Component {
     this.props.fetchFinishingFromFirebase();
   }
 
-  renderRow(bookingItem, sectionId, bookingRefId) {
+  renderRow(bookingItem) {
     return (
       <BookingItem
         bookingItem={bookingItem}
-        onMoveForward={this.onMoveForward.bind(this)}
-        onMoveBackward={this.onMoveBackward.bind(this)}
-        bookingRefId={bookingRefId}
+        onPressNext={this.onPressNext.bind(this)}
+        onPressBack={this.onPressBack.bind(this)}
         onPressBookingItem={this.props.onPressBookingItem} />
     )
   }
 
-  onMoveForward(booking, id) {
-    const bookingRef = FirebaseService.child('bookings').child('users').child('1').child(id);
-    let bookingStatus = '';
-    switch (booking.status) {
-      case 'booking':
-        bookingStatus = 'arriving'
-        break;
-      case 'arriving':
-        bookingStatus = 'eating'
-        break;
-      case 'eating':
-        bookingStatus = 'finishing'
-        break;
-      default:
-        bookingStatus = booking.status
-        break;
-    }
-    bookingRef.update({
-      status: bookingStatus
-    });
+  onPressNext(booking) {
+    changeStatusWhenPressNext(booking)
   }
 
-  onMoveBackward(booking, id) {
-    const bookingRef = FirebaseService.child('bookings').child('users').child('1').child(id);
-    let bookingStatus = '';
-    switch (booking.status) {
-      case 'arriving':
-        bookingStatus = 'booking'
-        break;
-      case 'eating':
-        bookingStatus = 'arriving'
-        break;
-      case 'finishing':
-        bookingStatus = 'eating'
-        break;
-      default:
-        bookingStatus = booking.status
-        break;
-    }
-    bookingRef.update({
-      status: bookingStatus
-    });
+  onPressBack(booking) {
+    changeStatusWhenPressBack(booking)
   }
 
   getEachColumnLength(list) {
@@ -108,7 +71,7 @@ class ListViewBoard extends Component {
         {
           isFetching ? (
             <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="#38003c" style={styles.indicator}/>
+              <ActivityIndicator size="large" color="#38003c" style={styles.indicator} />
             </View>
           ) : (
               <View style={styles.container}>
@@ -155,29 +118,32 @@ class ListViewBoard extends Component {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    marginTop: 8,
+    marginHorizontal: 8,
   },
   boardHeader: {
-    backgroundColor: '#38003c',
+    backgroundColor: '#dfe4ea',
     borderColor: '#cccccc',
-    borderBottomWidth: 1,
-    color: 'white',
+    color: '#2f3542',
     textAlign: 'center',
     fontWeight: 'bold',
-    padding: 5,
+    padding: 10,
+    elevation: 2,
   },
   columnContainer: {
-    width: 200,
-    borderWidth: 1,
-    borderColor: '#c0d6e4',
-    backgroundColor: '#38003c',
+    width: 230,
+    marginTop: 8,
+    marginHorizontal: 7,
+    backgroundColor: '#ced6e0',
     alignContent: 'center',
+    elevation: 2,
   },
   loadingContainer: {
     alignItems: 'center',
-    justifyContent: 'center', 
+    justifyContent: 'center',
   },
-  indicator:{
-   
+  indicator: {
+
   }
 });
 
