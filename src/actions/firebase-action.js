@@ -138,7 +138,7 @@ function getCurrentTime() {
 function calculateLengthTime(time1, time2) {
     var a = moment(time1)
     var b = moment(time2)
-    return a.diff(b, 'seconds')
+    return a.diff(b, 'minutes')
 
 }
 
