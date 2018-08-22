@@ -14,7 +14,10 @@ class AddCustomerBooking extends Component {
 
 const styles = StyleSheet.create({
     container:{
-      padding: 10,
+      backgroundColor: 'white',
+      marginTop: 15,
+      paddingBottom: 20,
+      elevation: 2,
     }
 });
 

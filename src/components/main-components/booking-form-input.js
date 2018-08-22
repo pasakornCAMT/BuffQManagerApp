@@ -117,7 +117,7 @@ class BookingFormInput extends Component {
                 </View>
                 <View style={styles.right}>
                     <DatePicker
-                        style={{ width: '50%', paddingBottom: 10, }}
+                        style={{ width: '70%', paddingBottom: 10, }}
                         mode="time"
                         date={addBooking.timeText}
                         androidMode="spinner"
@@ -131,10 +131,10 @@ class BookingFormInput extends Component {
                                 position: 'absolute',
                                 left: 0,
                                 top: 4,
-                                marginLeft: 0
                             },
                             dateInput: {
-                                marginLeft: 36,
+                                marginLeft: 38,
+                                borderRadius: 4,
                             }
                         }}
                         onDateChange={(time) => this.props.inputTime(time)}
@@ -150,7 +150,7 @@ class BookingFormInput extends Component {
                     }
                     <View style={styles.button}>
                         <Button
-                            backgroundColor="#00ff85"
+                            backgroundColor="#55efc4"
                             color='#38003c'
                             title="Confirm"
                             onPress={this.onPressConfirm.bind(this)}

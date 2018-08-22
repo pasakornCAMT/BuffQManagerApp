@@ -1,7 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-
+import { Divider } from 'react-native-elements'
 import {
   StyleSheet,
   View,
@@ -15,20 +15,36 @@ class BookingItem extends Component {
 
     return (
       <View style={styles.container}>
-        <TouchableHighlight onPress={()=>{this.props.onPressBookingItem(bookingItem)}}>
+        <TouchableHighlight onPress={() => { this.props.onPressBookingItem(bookingItem) }}>
           <View style={styles.textContainer}>
-            <Text style={styles.bookingText}>
-              {bookingItem.customer}
-            </Text>
-            <Text style={styles.bookingText}>
-              {bookingItem.dateText}
-            </Text>
-            <Text style={styles.bookingText}>
-              {bookingItem.timeText}
-            </Text>
-            <Text style={styles.bookingText}>
-              {bookingItem.numOfCustomer} people
-            </Text>
+            <View style={styles.spaceBetween}>
+              <Text>Name</Text>
+              <Text style={styles.bookingText}>
+                {bookingItem.customer}
+              </Text>
+            </View>
+            <Divider style={{ backgroundColor: '#dcdde1' }} />
+            <View style={styles.spaceBetween}>
+              <Text>Phone</Text>
+              <Text style={styles.bookingText}>
+                {bookingItem.phone}
+              </Text>
+            </View>
+            <Divider style={{ backgroundColor: '#dcdde1' }} />
+            <View style={styles.spaceBetween}>
+              <Text>Booking Time</Text>
+              <Text style={styles.bookingText}>
+                {bookingItem.timeText}
+              </Text>
+            </View>
+            <Divider style={{ backgroundColor: '#dcdde1' }} />
+            <View style={styles.spaceBetween}>
+              <Text>#</Text>
+              <Text style={styles.bookingText}>
+                {bookingItem.numOfCustomer} people
+              </Text>
+            </View>
+            <Divider style={{ backgroundColor: '#dcdde1' }} />
           </View>
         </TouchableHighlight>
         <View style={styles.buttonContainer}>
@@ -63,24 +79,35 @@ const styles = StyleSheet.create({
   bookingText: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: '#636e72'
   },
   buttonContainer: {
     flexDirection: 'row',
-    marginBottom: 5,
   },
   nextButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#00ff85',
-    width: '50%',
+    backgroundColor: '#55efc4',
+    flex: 1,
     height: 30,
+    marginLeft: 2.5,
+    marginBottom: 5,
+    marginRight: 5,
+    borderRadius: 4,
+    elevation: 2,
   },
   backButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#e90052',
+    backgroundColor: '#d63031',
     width: '50%',
+    flex: 1,
     height: 30,
+    marginRight: 2.5,
+    marginBottom: 5,
+    marginLeft: 5,
+    borderRadius: 4,
+    elevation: 2,
   },
   textBackButton: {
     color: 'white',
@@ -89,6 +116,10 @@ const styles = StyleSheet.create({
   textNextButton: {
     color: '#38003c',
     fontWeight: 'bold',
+  },
+  spaceBetween: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
   }
 });
 

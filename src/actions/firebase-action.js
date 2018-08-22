@@ -53,14 +53,23 @@ export function openRestaurant() {
         status: 'open'
     })
 }
-export function assignBookingToTable(booking, id) {
+export function assignBookingToTable(booking, table) {
     const resId = '0'
-    FirebaseService.child('tables').child(resId).child(id).update({
-        bookingId: booking.id,
-        customer: booking.customer,
-        customer_phone: booking.customer + '_' + booking.phone,
-        available: false
-    })
+    data = {
+        bookingId: '',
+        customer: '',
+        customer_phone: '',
+        available: true
+    }
+    if (table.available) {
+        data = {
+            bookingId: booking.id,
+            customer: booking.customer,
+            customer_phone: booking.customer + '_' + booking.phone,
+            available: false
+        }
+    }
+    FirebaseService.child('tables').child(resId).child(table.id).update(data)
 }
 
 export function changeStatusToEating(id) {
@@ -99,7 +108,9 @@ export function changeStatusWhenPressNext(booking) {
             data.finishTime = getCurrentTime()
             data.waitingTime = calculateLengthTime(booking.startEating, booking.startArriving)
             data.eatingTime = calculateLengthTime(getCurrentTime(), booking.startEating)
+            data.payment = true
             insertToDataHistory(booking, data.finishTime, data.waitingTime, data.eatingTime)
+            setTableToAvailableByBookingId(booking.id)
             break;
         default:
             data.status = booking.status
@@ -110,7 +121,6 @@ export function changeStatusWhenPressNext(booking) {
 
 export function changeStatusWhenPressBack(booking) {
     const bookingRef = FirebaseService.child('bookings').child('users').child('1').child(booking.id);
-    let bookingStatus = '';
     var data = {
         status: '',
     }
@@ -131,18 +141,18 @@ export function changeStatusWhenPressBack(booking) {
     bookingRef.update(data);
 }
 
-function getCurrentTime() {
+export function getCurrentTime() {
     return moment().format('YYYY-MM-DD HH:mm:ss');
 }
 
-function calculateLengthTime(time1, time2) {
+export function calculateLengthTime(time1, time2) {
     var a = moment(time1)
     var b = moment(time2)
     return a.diff(b, 'minutes')
 
 }
 
-function insertToDataHistory(booking, finishTime, waitingTime, eatingTime) {
+export function insertToDataHistory(booking, finishTime, waitingTime, eatingTime) {
     const historyRef = FirebaseService.child('data-history').child('0')
     const historyData = {
         bookingId: booking.id,
@@ -159,4 +169,23 @@ function insertToDataHistory(booking, finishTime, waitingTime, eatingTime) {
         id: key
     })
 }
+
+export function setTableToAvailableByBookingId(bookingId) {
+    resId = '0'
+    const tablesRef = FirebaseService.child('tables').child(resId)
+    tablesRef.on('value', (snap) => {
+        var tables = snap.val()
+        Object.values(tables).map((table) => {
+            if (table.bookingId == bookingId) {
+                tablesRef.child(table.id).update({
+                    available: true,
+                    bookingId: '',
+                    customer: '',
+                    customer_phone: '',
+                })
+            }
+        })
+    })
+}
+
 

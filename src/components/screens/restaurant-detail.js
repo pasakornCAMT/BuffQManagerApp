@@ -47,7 +47,10 @@ class RestaurantDetail extends Component {
 
 const styles = StyleSheet.create({
     container:{
-      padding: 10
+      padding: 10,
+      backgroundColor: 'white',
+      marginTop: 15,
+      elevation:2
     },
     divider:{
       marginVertical: 5,

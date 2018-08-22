@@ -1,38 +1,43 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { Divider } from 'react-native-elements'
 
 class RestaurantFormData extends Component {
     render() {
         const { restaurant } = this.props
         return (
             <View>
-                <View style={styles.container}>
-                    <Text style={styles.left}>Restaurant Name</Text>
-                    <Text style={styles.right}>{restaurant.name}</Text>
-                </View>
-                <View style={styles.container}>
+                <View style={styles.detailContainer}>
                     <Text style={styles.left}>Status</Text>
                     <Text style={styles.right}>{restaurant.status}</Text>
                 </View>
-
+                <Divider style={{ backgroundColor: '#dcdde1' }} />
+                <View style={styles.detailContainer}>
+                    <Text style={styles.left}>Restaurant Name</Text>
+                    <Text style={styles.right}>{restaurant.name}</Text>
+                </View>
+                <Divider style={{ backgroundColor: '#dcdde1' }} />
+                
             </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
+    detailContainer: {
         flexDirection: 'row',
-        marginTop: 10,
+        justifyContent: 'space-between',
+        paddingVertical: 8,
     },
     left: {
-        fontWeight: 'bold',
-        fontSize: 16,
+        fontSize: 18,
+        color: '#636e72',
     },
     right: {
-        fontSize: 16,
-        marginLeft: 10,
-    }
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#636e72'
+    },
 
 });
 

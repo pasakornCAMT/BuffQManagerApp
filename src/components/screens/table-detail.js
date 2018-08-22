@@ -10,74 +10,11 @@ class TableDetail extends Component {
     static navigationOptions = {
         title: 'Table Detail',
     };
-    onSelectedItemsChange = selectedItem => {
-        if (selectedItem !== '') {
-            Alert.alert(
-                'Alert',
-                'Are you sure',
-                [
-                    { text: 'Cancel', style: 'cancel' },
-                    {
-                        text: 'OK', onPress: () => {
-                            const { tableItem } = this.props.tableDetail
-                            assignBookingToTable(selectedItem, tableItem.id)
-                            this.redirectToTablesLayout();
-                            //changeStatusToEating(selectedItem.id)
-                        }
-                    },
-                ]
-            );
-        }
-    }
-    onSelectReset() {
-        Alert.alert(
-            'Alert',
-            'Are you sure',
-            [
-                { text: 'Cancel', style: 'cancel' },
-                {
-                    text: 'OK', onPress: () => {
-                        const { tableItem } = this.props.tableDetail
-                        resetAssign(tableItem.id)
-                        this.redirectToTablesLayout()
-                    }
-                },
-            ]
-        );
-
-    }
-    redirectToTablesLayout() {
-        const { navigate } = this.props.navigation
-        navigate('TablesLayout')
-    }
     render() {
         const { tableItem } = this.props.tableDetail
-        const { navigate } = this.props.navigation;
-        const { arrivings } = this.props.bookingBoard
         return (
             <View style={styles.container}>
-                <View style={styles.header}>
-                    <View style={styles.assignTable}>
-                        <Picker
-                            selectedValue={tableItem.customer_phone}
-                            onValueChange={this.onSelectedItemsChange.bind(this)}
-                            style={{ backgroundColor: "#ccc" }}>
-                            <Picker.Item label="Select Booking..." value="" />
-                            {
-                                Object.values(arrivings).map((item, key) => (
-                                    <Picker.Item label={item.customer + '_' + item.phone} value={item} key={key} />
-                                ))
-                            }
-                        </Picker>
-                    </View>
-                    <View style={{ width: '30%', marginTop: 5 }}>
-                        <Button
-                            title="Reset"
-                            onPress={this.onSelectReset.bind(this)}
-                        />
-                    </View>
-                </View>
-                <TableDetailFormData navigate={navigate} onSelectedItemsChange={this.onSelectedItemsChange.bind(this)} />
+                <TableDetailFormData tableItem={tableItem}/>
             </View>
         );
     }
@@ -86,14 +23,10 @@ class TableDetail extends Component {
 const styles = StyleSheet.create({
     container: {
         padding: 10,
+        backgroundColor: 'white',
+        elevation: 2,
+        marginTop: 15,
     },
-    assignTable: {
-        width: '50%',
-        marginVertical: 5,
-    },
-    header: {
-        flexDirection: 'row',
-    }
 });
 
 function mapStateToProps(state) {

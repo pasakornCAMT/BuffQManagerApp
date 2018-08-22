@@ -1,29 +1,40 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, Picker, Alert } from 'react-native';
 import { connect } from 'react-redux';
+import { Divider } from 'react-native-elements'
 
 class TableDetailFormData extends Component {
     render() {
-        const { tableItem } = this.props.tableDetail
+        const { tableItem } = this.props
         return (
             <ScrollView>
                 <View>
-                    <View style={styles.container}>
-                        <Text style={styles.left}>Table: </Text>
+                    <Divider style={{ backgroundColor: '#dcdde1' }} />
+                    <View style={styles.detailContainer}>
+                        <Text style={styles.left}>Table </Text>
                         <Text style={styles.right}>{tableItem.table}</Text>
                     </View>
-                    <View style={styles.container}>
-                        <Text style={styles.left}>Booking ID: </Text>
+                    <Divider style={{ backgroundColor: '#dcdde1' }} />
+                    <View style={styles.detailContainer}>
+                        <Text style={styles.left}>Booking ID </Text>
                         <Text style={styles.right}>{tableItem.bookingId}</Text>
                     </View>
-                    <View style={styles.container}>
-                        <Text style={styles.left}>Customer: </Text>
+                    <Divider style={{ backgroundColor: '#dcdde1' }} />
+                    <View style={styles.detailContainer}>
+                        <Text style={styles.left}>Customer </Text>
                         <Text style={styles.right}>{tableItem.customer}</Text>
                     </View>
-                    <View style={styles.container}>
-                        <Text style={styles.left}>Seats: </Text>
+                    <Divider style={{ backgroundColor: '#dcdde1' }} />
+                    <View style={styles.detailContainer}>
+                        <Text style={styles.left}>Customer_Phone </Text>
+                        <Text style={styles.right}>{tableItem.customer_phone}</Text>
+                    </View>
+                    <Divider style={{ backgroundColor: '#dcdde1' }} />
+                    <View style={styles.detailContainer}>
+                        <Text style={styles.left}>Seats </Text>
                         <Text style={styles.right}>{tableItem.seat}</Text>
                     </View>
+                    <Divider style={{ backgroundColor: '#dcdde1' }} />
                 </View>
             </ScrollView>
         );
@@ -31,17 +42,19 @@ class TableDetailFormData extends Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    detailContainer: {
         flexDirection: 'row',
-        marginTop: 10,
+        justifyContent: 'space-between',
+        paddingVertical: 8,
     },
     left: {
-        fontWeight: 'bold',
-        fontSize: 16,
+        fontSize: 18,
+        color: '#636e72',
     },
     right: {
-        fontSize: 16,
-        marginLeft: 10,
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#636e72'
     },
 });
 

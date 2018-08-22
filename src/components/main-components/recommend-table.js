@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Alert } from 'react-native';
+import { connect } from 'react-redux';
 
 class RecommendTable extends Component {
     componentWillMount(){
         this.generateTable()
     }
     generateTable(){
-        const {tableLayout} = this.props
-        const {numOfCustomer} = this.props
+        const {tableLayout} = this.props.tableLayout
+        const {numOfCustomer} = this.props.bookingDetail
         var tableSet = []
         var table = []
         var availableTables = []
@@ -29,13 +30,11 @@ class RecommendTable extends Component {
     }
     someText(){
         var text = <View style={styles.tableBorder}><Text>some text</Text></View>
-        var text2 = <View style={styles.tableBorder}><Text>some text2</Text></View>
-        text =  text,text2
         return text
     }
     render() {
-        const {tableItem} = this.props
-        const {numOfCustomer} = this.props
+        const {tableLayout} = this.props
+        const {numOfCustomer} = this.props.bookingDetail
         return (
             <View style={styles.container}>
                 <Text style={styles.header}>Recommend Table </Text>
@@ -46,8 +45,6 @@ class RecommendTable extends Component {
                     <View style={styles.tableBorder}>
                         <Text style={styles.tableFont}>Table2</Text>
                     </View>
-                    {this.someText()}
-                    
                 </View>
             </View>
         );
@@ -56,7 +53,7 @@ class RecommendTable extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        marginLeft: 5,
+      
     },
     header: {
         fontWeight: 'bold',
@@ -74,4 +71,11 @@ const styles = StyleSheet.create({
     }
 });
 
-export default RecommendTable;
+function mapStateToProps(state) {
+    return {
+        bookingDetail: state.bookingDetail,
+        tableLayout: state.tableLayout,
+    }
+}
+
+export default connect(mapStateToProps)(RecommendTable)
