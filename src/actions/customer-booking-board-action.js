@@ -61,7 +61,7 @@ export function fetchArrivingFromFirebase(){
       FirebaseService.child('bookings').child('users').child('1')
       .orderByChild('status').equalTo('arriving').on('value',(snap)=>{
         if(snap.val() == null){
-          dispatch(noArringList())
+          dispatch(noArrivingList())
         }else{
           dispatch(getArrivingListSuccess(snap.val()))
         }
@@ -72,7 +72,7 @@ export function fetchArrivingFromFirebase(){
   }
 }
 
-export function noArringList(){
+export function noArrivingList(){
   return{
     type: NO_ARRIVING_LIST
   }
