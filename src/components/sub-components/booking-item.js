@@ -14,7 +14,7 @@ class BookingItem extends Component {
     const { bookingItem } = this.props;
 
     return (
-      <View style={styles.container}>
+        <View style={[styles.container, bookingItem.type == 'walkIn' ? styles.walkIn : styles.online]}>
         <TouchableHighlight onPress={() => { this.props.onPressBookingItem(bookingItem) }}>
           <View style={styles.textContainer}>
             <View style={styles.spaceBetween}>
@@ -68,10 +68,15 @@ class BookingItem extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
     borderRadius: 4,
     margin: 8,
     elevation: 2,
+  },
+  walkIn:{
+    backgroundColor: '#ffeaa7'
+  },
+  online:{
+    backgroundColor: 'white',
   },
   textContainer: {
     margin: 5,

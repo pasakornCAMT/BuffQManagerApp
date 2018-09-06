@@ -4,7 +4,7 @@ import TablesGrid from '../main-components/tables-grid';
 import { connect } from 'react-redux';
 import { setTableDetailState } from '../../actions/table-detail-action'
 import RecommendTable from '../main-components/recommend-table';
-import { assignBookingToTable, changeStatusToEating } from '../../actions/firebase-action';
+import { assignBookingToTable, changeStatusToEating, changeStatusWhenPressNext } from '../../actions/firebase-action';
 import { Button } from 'react-native-elements'
 
 class TablesLayout extends Component {
@@ -14,13 +14,8 @@ class TablesLayout extends Component {
     onPressTableItem(tableItem) {
         const { bookingItem } = this.props.bookingDetail
         this.props.setTableDetailState(tableItem)
-        //this.navigateToTableDetail()
         assignBookingToTable(bookingItem, tableItem)
 
-    }
-    navigateToTableDetail() {
-        const { navigate } = this.props.navigation;
-        navigate('TableDetail')
     }
     onPressConfirm(){
         const { bookingItem } = this.props.bookingDetail
@@ -31,7 +26,8 @@ class TablesLayout extends Component {
                 { text: 'Cancel', style: 'cancel' },
                 {
                     text: 'OK', onPress: () => {
-                        changeStatusToEating(bookingItem.id)
+                        //changeStatusToEating(bookingItem.id)
+                        changeStatusWhenPressNext(bookingItem)
                         this.redirectToBookingBoard()
                     }
                 },

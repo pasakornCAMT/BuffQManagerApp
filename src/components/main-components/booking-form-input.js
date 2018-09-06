@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { FormLabel, FormInput, Button, CheckBox } from 'react-native-elements'
+import { View, Text, StyleSheet, Alert } from 'react-native';
+import { FormLabel, FormInput, Button, CheckBox, FormValidationMessage } from 'react-native-elements'
 import Spinner from 'react-native-number-spinner';
 import DatePicker from 'react-native-datepicker';
 import { connect } from 'react-redux';
@@ -15,6 +15,7 @@ import {
     inputTime,
     selectDrink,
     recordPrice,
+    clearForm,
 } from '../../actions/add-booking-action'
 
 class BookingFormInput extends Component {
@@ -25,6 +26,9 @@ class BookingFormInput extends Component {
         const { id } = this.props.restaurant.restaurant
         const price = this.calculateTotalPrice()
         insertNewBookingToFirebase(addBooking, hasChild, hasDrink, id, price)
+        Alert.alert('Booking success')
+        this.props.clearForm()
+        this.props.redirectToBookingBoard()
     }
     calculateTotalPrice() {
         const { numOfCustomer, numOfAdult, numOfChild } = this.props.addBooking
@@ -60,6 +64,9 @@ class BookingFormInput extends Component {
                         onChangeText={(name) => this.props.inputName(name)}
                         value={addBooking.name}
                     />
+                    {addBooking.name.length == 0 ? (
+                        <FormValidationMessage>The customer’s name input field is empty</FormValidationMessage>
+                    ):null}
                     <FormLabel>Phone</FormLabel>
                     <FormInput
                         underlineColorAndroid="#ccc"
@@ -205,6 +212,7 @@ function mapDispatchToProps(dispatch) {
         inputTime: (time) => dispatch(inputTime(time)),
         selectDrink: () => dispatch(selectDrink()),
         recordPrice: (price) => dispatch(recordPrice(price)),
+        clearForm: () => dispatch(clearForm())
     }
 }
 

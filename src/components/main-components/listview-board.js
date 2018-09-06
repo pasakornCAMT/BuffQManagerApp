@@ -7,6 +7,7 @@ import {
   fetchArrivingFromFirebase,
   fetchEatingFromFirebase,
   fetchFinishingFromFirebase,
+  fetchWalkInFromFirebase,
 } from '../../actions/customer-booking-board-action'
 import {
   StyleSheet,
@@ -25,6 +26,7 @@ class ListViewBoard extends Component {
     this.props.fetchArrivingFromFirebase();
     this.props.fetchEatingFromFirebase();
     this.props.fetchFinishingFromFirebase();
+    //this.props.fetchWalkInFromFirebase();
   }
 
   renderRow(bookingItem) {
@@ -38,7 +40,12 @@ class ListViewBoard extends Component {
   }
 
   onPressNext(booking) {
-    changeStatusWhenPressNext(booking)
+    if(booking.status == 'arriving'){
+      this.props.assignTable(booking)
+    }else{
+      changeStatusWhenPressNext(booking)
+    }
+    
   }
 
   onPressBack(booking) {
@@ -160,6 +167,7 @@ function mapDispatchToProps(dispatch) {
     fetchArrivingFromFirebase: () => dispatch(fetchArrivingFromFirebase()),
     fetchEatingFromFirebase: () => dispatch(fetchEatingFromFirebase()),
     fetchFinishingFromFirebase: () => dispatch(fetchFinishingFromFirebase()),
+    fetchWalkInFromFirebase: () => dispatch(fetchWalkInFromFirebase()),
   }
 }
 

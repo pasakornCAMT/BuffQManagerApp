@@ -1,4 +1,4 @@
- import {
+import {
     INPUT_NAME,
     INPUT_PHONE_NUMBER,
     INPUT_NUM_OF_CUSTOMER,
@@ -7,69 +7,89 @@
     INPUT_TIME,
     SELECT_DRINK,
     RECORD_PRICE,
+    CLEAR_FORM,
+    NOT_EMPTY_NAME,
 } from '../constants/constants'
+import moment from 'moment';
 
 let date = new Date().getDate();
 let month = new Date().getMonth() + 1;
 let year = new Date().getFullYear();
 let mindate = date + '-' + month + '-' + year;
 
+let hours = moment().hours()
+let minutes = moment().minutes()
+let mintime = hours + ':' + minutes
+
 const addBookingState = {
     dateText: mindate,
-    timeText: '',
+    timeText: mintime,
     numOfCustomer: 1,
     numOfAdult: 1,
     numOfChild: 0,
     name: '',
     phoneNumber: '',
     drink: false,
-    price: 0 
+    price: 0,
+    invaildPhone: true,
 }
 
-export default function addBookingReducer (state = addBookingState, action){
+export default function addBookingReducer(state = addBookingState, action) {
     switch (action.type) {
         case INPUT_NAME:
-            return{
+            return {
                 ...state,
                 name: action.name,
             }
         case INPUT_PHONE_NUMBER:
-            return{
+            return {
                 ...state,
                 phoneNumber: action.phone,
             }
         case INPUT_NUM_OF_CUSTOMER:
-            return{
+            return {
                 ...state,
                 numOfCustomer: action.numOfCustomer,
             }
         case INPUT_NUM_OF_ADULT:
-            return{
+            return {
                 ...state,
                 numOfAdult: action.numOfAdult,
             }
         case INPUT_NUM_OF_CHILD:
-            return{
+            return {
                 ...state,
                 numOfChild: action.numOfChild,
             }
         case INPUT_TIME:
-            return{
+            return {
                 ...state,
                 timeText: action.time,
             }
         case SELECT_DRINK:
-            return{
+            return {
                 ...state,
                 drink: !state.drink,
-            }             
+            }
         case RECORD_PRICE:
-            return{
+            return {
                 ...state,
                 price: action.price,
             }
+        case CLEAR_FORM:
+            return {
+                dateText: mindate,
+                timeText: mintime,
+                numOfCustomer: 1,
+                numOfAdult: 1,
+                numOfChild: 0,
+                name: '',
+                phoneNumber: '',
+                drink: false,
+                price: 0
+            }        
         default:
             return state
-            
+
     }
 }

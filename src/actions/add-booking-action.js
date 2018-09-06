@@ -7,6 +7,8 @@ import {
     INPUT_TIME,
     SELECT_DRINK,
     RECORD_PRICE,
+    CLEAR_FORM,
+    NOT_EMPTY_NAME,
 } from '../constants/constants'
 
 export function inputName(name){
@@ -61,6 +63,12 @@ export function recordPrice(price){
     return{
         type: RECORD_PRICE,
         price,
+    }
+}
+
+export function clearForm(){
+    return{
+        type: CLEAR_FORM
     }
 }
 

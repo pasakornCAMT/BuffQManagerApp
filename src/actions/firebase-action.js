@@ -10,8 +10,9 @@ let min = new Date().getMinutes();
 let pressDate = days[new Date().getDay()] + ' ' + date + '-' + month + '-' + year + ' ' + hours + ':' + min;
 
 export function insertNewBookingToFirebase(booking, hasChild, hasDrink, resId, price) {
+    const userId = '0'
     console.log('new booking: ', booking)
-    const bookingRef = FirebaseService.child('bookings').child('walk-in')
+    const bookingRef = FirebaseService.child('bookings').child('users').child('1')
     insertBooking = {
         customer: booking.name,
         phone: booking.phoneNumber,
@@ -22,8 +23,9 @@ export function insertNewBookingToFirebase(booking, hasChild, hasDrink, resId, p
         totalPrice: price,
         resId: resId,
         pressDate: pressDate,
-        numOfCustomer: booking.numOfCustomer
-
+        numOfCustomer: booking.numOfCustomer,
+        status: 'booking',
+        type: 'walkIn'
     }
     if (hasDrink) {
         insertBooking.includeDrink = booking.drink
@@ -39,6 +41,7 @@ export function insertNewBookingToFirebase(booking, hasChild, hasDrink, resId, p
         bookingRef.child(key).update({
             id: key
         })
+        FirebaseService.child('restaurantBookings').child(resId).child(key).set(true)
     } catch (error) {
 
     }
@@ -90,6 +93,7 @@ export function resetAssign(tableId) {
 }
 
 export function changeStatusWhenPressNext(booking) {
+    console.log('bookingId: ',booking.id)
     const bookingRef = FirebaseService.child('bookings').child('users').child('1').child(booking.id);
     var data = {
         status: '',
@@ -161,7 +165,8 @@ export function insertToDataHistory(booking, finishTime, waitingTime, eatingTime
         startEating: booking.startEating,
         eatingTime: eatingTime,
         finishTime: finishTime,
-        totalTime: waitingTime + eatingTime
+        totalTime: waitingTime + eatingTime,
+        dateText_timeText: booking.dateText_timeText,
     }
     var data = historyRef.push(historyData)
     var key = data.getKey()
@@ -186,6 +191,26 @@ export function setTableToAvailableByBookingId(bookingId) {
             }
         })
     })
+}
+
+export function updateBookingIntoFirebase(booking, updatedData){
+    const bookingRef = FirebaseService.child('bookings').child('users').child('1').child(booking.id)
+    bookingRef.update(updatedData)
+}
+
+export function removeBookingFromFirebase(id){
+    //FirebaseService.child('bookings').child('users').child('1').child('aaa').remove()
+}
+
+export function getBookingFromId(id){
+    try {
+        FirebaseService.child('bookings').child('users').child('1').child(id).on('valud',(snap)=>{
+            return snap.val()
+        })  
+    } catch (error) {
+        
+    }
+
 }
 
 

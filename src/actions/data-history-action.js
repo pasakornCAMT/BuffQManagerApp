@@ -14,12 +14,12 @@ export function fetchDataHistoryFromFirebase(){
     return (dispatch) => {
         dispatch(getDataHistory())
         try {
-            FirebaseService.child('data-history').child(resId).on('value',(snap)=>{
-                if(snap.val() == null){
+            FirebaseService.child('data-history').child(resId).on('value',(dataSnap)=>{
+                if(dataSnap.val() == null){
                     dispatch(noDataHistory())
                 }else{
                     
-                    Object.values(snap.val()).map((item)=>{
+                    Object.values(dataSnap.val()).map((item)=>{
                         waiting.push(item.waitingTime)
                         eating.push(item.eatingTime)
                         total.push(item.totalTime)
@@ -30,7 +30,7 @@ export function fetchDataHistoryFromFirebase(){
                     console.log('w: ',waiting)
                     console.log('e: ',eating)
                     console.log('t: ',total)
-                    dispatch(getDataHistorySuccess(snap.val(),w,e,t))
+                    dispatch(getDataHistorySuccess(dataSnap.val(),w,e,t))
                     waiting = []
                     eating = []
                     total = []
@@ -48,7 +48,7 @@ export function getDataHistory(){
     }
 }
 
-export function getDataHistorySuccess(data, waiting, eating, total){
+export function getDataHistorySuccess(data, waiting, eating, total, booking){
     return{
         type: FETCHING_DATA_HISTORY_SUCCESS,
         data,

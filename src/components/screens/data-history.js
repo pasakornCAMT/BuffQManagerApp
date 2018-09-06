@@ -41,8 +41,8 @@ class DataHistory extends Component {
                             Object.values(dataHistory).map((l) => (
                                 <ListItem
                                     key={l.id}
-                                    title={l.bookingId}
-                                    subtitle={l.finishTime}
+                                    title={l.finishTime}
+                                    subtitle={'Booking date_time: '+l.dateText_timeText}
                                 />
                             ))
                         }

@@ -11,6 +11,7 @@ import TableDetail from '../components/screens/table-detail';
 import DataHistory from '../components/screens/data-history';
 import TableView from '../components/screens/table-view';
 import createTabNavigator from '../../node_modules/react-navigation-tabs/dist/utils/createTabNavigator';
+import EditBooking from '../components/screens/edit-booking';
 
 const CustomerBookingBoardStack = StackNavigator({
   CustomerBookingBoard: {
@@ -25,6 +26,9 @@ const CustomerBookingBoardStack = StackNavigator({
   TablesLayout: {
     screen: TablesLayout,
   },
+  EditBooking: {
+    screen: EditBooking,
+  }
 })
 
 const TablesViewStack = StackNavigator({
