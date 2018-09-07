@@ -4,7 +4,9 @@ import {
     UP_NUM_OF_CUSTOMER,
     DOWN_NUM_OF_CUSTOMER,
     VALID_EDIT_NAME,
+    INVALID_EDIT_NAME,
     VALID_EDIT_PHONE_NUMBER,
+    INVALID_EDIT_PHONE_NUMBER,
     EDIT_DRINK,
 } from '../constants/constants'
 
@@ -23,12 +25,14 @@ const bookingDetailState = {
     restaurant: '',
     pressDate: '',
     drink: null,
+    invalidPhone: false,
+    invalidName: false,
 }
 
-export default function bookingDetailReducer(state = bookingDetailState, action){
+export default function bookingDetailReducer(state = bookingDetailState, action) {
     switch (action.type) {
         case SET_BOOKING_DETAIL_STATE:
-            return{
+            return {
                 ...state,
                 bookingItem: action.bookingItem,
                 numOfCustomer: action.bookingItem.numOfCustomer,
@@ -37,47 +41,61 @@ export default function bookingDetailReducer(state = bookingDetailState, action)
                 customer: action.bookingItem.customer,
                 phone: action.bookingItem.phone,
                 drink: action.bookingItem.includeDrink,
+                invalidPhone: false,
+                invalidName: false,
             }
         case EDIT_NUM_OF_CUSTOMER:
-            return{
+            return {
                 ...state,
                 numOfCustomer: action.numOfCustomer
             }
         case UP_NUM_OF_CUSTOMER:
-            if(state.numOfCustomer < 10){
-                return{
+            if (state.numOfCustomer < 10) {
+                return {
                     ...state,
                     numOfCustomer: state.numOfCustomer + 1
                 }
-            }else{
+            } else {
                 return state
             }
-            
+
         case DOWN_NUM_OF_CUSTOMER:
-            if(state.numOfCustomer > 1){
-                return{
+            if (state.numOfCustomer > 1) {
+                return {
                     ...state,
                     numOfCustomer: state.numOfCustomer - 1
-                }   
-            }else{
+                }
+            } else {
                 return state
             }
         case VALID_EDIT_NAME:
-            return{
+            return {
                 ...state,
-                customer: action.name
+                customer: action.name,
+                invalidName: false,
             }
         case VALID_EDIT_PHONE_NUMBER:
-            return{
+            return {
                 ...state,
-                phone: action.phone
-            }   
+                phone: action.phone,
+                invalidPhone: false,
+            }
         case EDIT_DRINK:
-            return{
+            return {
                 ...state,
                 drink: !state.drink
-            }     
+            }
+        case INVALID_EDIT_NAME:
+            return {
+                ...state,
+                invalidName: true
+            }
+        case INVALID_EDIT_PHONE_NUMBER:
+            return {
+                ...state,
+                invalidPhone: true
+            }
         default:
-            return state 
+            return state
     }
 }

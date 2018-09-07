@@ -24,13 +24,13 @@ class EditFormBooking extends Component {
             phone: phone,
             totalPrice: this.calculateTotalPrice()
         }
-        if(restaurant.childPrice){
+        if (restaurant.childPrice) {
             updatedData.numOfAdult = numOfAdult
             updatedData.numOfChild = numOfChild
-        }else{
+        } else {
             updatedData.numOfCustomer = numOfCustomer
         }
-        if(restaurant.drink){
+        if (restaurant.drink) {
             updatedData.includeDrink = drink
         }
         updateBookingIntoFirebase(bookingItem, updatedData)
@@ -38,7 +38,7 @@ class EditFormBooking extends Component {
     }
 
     calculateTotalPrice() {
-        const { numOfCustomer, numOfAdult, numOfChild} = this.props.bookingDetail
+        const { numOfCustomer, numOfAdult, numOfChild } = this.props.bookingDetail
         const isSelectDrink = this.props.bookingDetail.drink
         const { drink, childPrice, price } = this.props.restaurant.restaurant
         var totalPrice = 0
@@ -62,7 +62,7 @@ class EditFormBooking extends Component {
 
     render() {
         //const { bookingItem } = this.props.bookingDetail
-        const { numOfCustomer, customer, phone, drink, numOfAdult, numOfChild } = this.props.bookingDetail
+        const { numOfCustomer, customer, phone, drink, numOfAdult, numOfChild, invalidName, invalidPhone } = this.props.bookingDetail
         const { restaurant } = this.props.restaurant
         return (
             <ScrollView>
@@ -73,12 +73,32 @@ class EditFormBooking extends Component {
                         underlineColorAndroid="#ccc"
                         onChangeText={(name) => this.props.onEditName(name)}
                     />
+                    {
+                        customer.length == 0 ? (
+                            <FormValidationMessage>The customer’s name input field is empty</FormValidationMessage>
+                        ) : null
+                    }
+                    {
+                        invalidName ? (
+                            <FormValidationMessage>The customer’s name input field is incorrect format</FormValidationMessage>
+                        ) : null
+                    }
                     <FormLabel>Phone</FormLabel>
                     <FormInput
                         value={phone}
                         underlineColorAndroid="#ccc"
                         onChangeText={(phone) => this.props.onEditPhoneNumber(phone)}
                     />
+                    {
+                        phone.length == 0 ? (
+                            <FormValidationMessage>The customer’s phone number input field is empty</FormValidationMessage>
+                        ) : null
+                    }
+                    {
+                        invalidPhone ? (
+                            <FormValidationMessage>The customer’s phone number input field is incorrect format</FormValidationMessage>
+                        ) : null
+                    }
                     {
                         restaurant.childPrice ? (
                             <View style={styles.customer}>
@@ -89,7 +109,7 @@ class EditFormBooking extends Component {
                                         name="arrow-down"
                                         size={15}
                                         iconStyle={{ paddingLeft: 10 }}
-                                        //onPress={this.props.downNumOfCustomer}
+                                    //onPress={this.props.downNumOfCustomer}
                                     />
                                     <Text style={styles.customerText}>{numOfAdult}</Text>
                                     <Icon.Button
@@ -97,7 +117,7 @@ class EditFormBooking extends Component {
                                         name="arrow-up"
                                         size={15}
                                         iconStyle={{ paddingLeft: 10 }}
-                                        //onPress={this.props.upNumOfCustomer}
+                                    //onPress={this.props.upNumOfCustomer}
                                     />
                                 </View>
                                 <FormLabel>Child</FormLabel>
@@ -107,7 +127,7 @@ class EditFormBooking extends Component {
                                         name="arrow-down"
                                         size={15}
                                         iconStyle={{ paddingLeft: 10 }}
-                                        //onPress={this.props.downNumOfCustomer}
+                                    //onPress={this.props.downNumOfCustomer}
                                     />
                                     <Text style={styles.customerText}>{numOfChild}</Text>
                                     <Icon.Button
@@ -115,7 +135,7 @@ class EditFormBooking extends Component {
                                         name="arrow-up"
                                         size={15}
                                         iconStyle={{ paddingLeft: 10 }}
-                                        //onPress={this.props.upNumOfCustomer}
+                                    //onPress={this.props.upNumOfCustomer}
                                     />
                                 </View>
                             </View>
@@ -151,7 +171,7 @@ class EditFormBooking extends Component {
                     {
                         drink ? (<Text style={{ paddingLeft: 10 }}>+{restaurant.drink} THB per each</Text>) : null
                     }
-                    <View style={{marginVertical:10}}>
+                    <View style={{ marginVertical: 10 }}>
                         <Button
                             title='Confirm'
                             borderRadius={8}

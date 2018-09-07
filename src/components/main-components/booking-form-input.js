@@ -16,6 +16,8 @@ import {
     selectDrink,
     recordPrice,
     clearForm,
+    validatePhoneNumber,
+    validateName,
 } from '../../actions/add-booking-action'
 
 class BookingFormInput extends Component {
@@ -55,25 +57,43 @@ class BookingFormInput extends Component {
     render() {
         const { addBooking } = this.props
         const { restaurant } = this.props.restaurant
+        const { phoneNumber, invalidPhone, name, invalidName } = this.props.addBooking
         return (
             <View style={styles.container}>
                 <View style={styles.left}>
                     <FormLabel>Name</FormLabel>
                     <FormInput
                         underlineColorAndroid="#ccc"
-                        onChangeText={(name) => this.props.inputName(name)}
+                        onChangeText={(name) => this.props.validateName(name)}
                         value={addBooking.name}
                     />
-                    {addBooking.name.length == 0 ? (
-                        <FormValidationMessage>The customer’s name input field is empty</FormValidationMessage>
-                    ):null}
+                    {
+                        name.length == 0 ? (
+                            <FormValidationMessage>The customer’s name input field is empty</FormValidationMessage>
+                        ):null
+                    }
+                    {
+                        invalidName ? (
+                            <FormValidationMessage>The customer’s name input field is incorrect format</FormValidationMessage>
+                        ):null
+                    }
                     <FormLabel>Phone</FormLabel>
                     <FormInput
                         underlineColorAndroid="#ccc"
                         keyboardType="numeric"
-                        onChangeText={(phone) => this.props.inputPhoneNumber(phone)}
-                        value={addBooking.phone}
+                        onChangeText={(phone) => this.props.validatePhoneNumber(phone)}
+                        value={addBooking.phoneNumber}
                     />
+                    {
+                        phoneNumber.length == 0 ? (
+                            <FormValidationMessage>The customer’s phone number input field is empty</FormValidationMessage>
+                        ):null
+                    }
+                    {
+                        invalidPhone ? (
+                            <FormValidationMessage>The customer’s phone number input field is incorrect format</FormValidationMessage>
+                        ):null
+                    }
                     {
                         restaurant.childPrice ? (
                             <View style={styles.customer}>
@@ -158,9 +178,9 @@ class BookingFormInput extends Component {
                     <View style={styles.button}>
                         <Button
                             backgroundColor="#55efc4"
-                            color='#38003c'
                             title="Confirm"
                             onPress={this.onPressConfirm.bind(this)}
+                            disabled={ name.length == 0 || invalidPhone || invalidName}
                         />
                     </View>
                 </View>
@@ -212,6 +232,8 @@ function mapDispatchToProps(dispatch) {
         inputTime: (time) => dispatch(inputTime(time)),
         selectDrink: () => dispatch(selectDrink()),
         recordPrice: (price) => dispatch(recordPrice(price)),
+        validatePhoneNumber: (phone) => dispatch(validatePhoneNumber(phone)),
+        validateName: (name) => dispatch(validateName(name)),
         clearForm: () => dispatch(clearForm())
     }
 }

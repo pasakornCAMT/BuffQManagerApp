@@ -4,7 +4,9 @@ import{
     UP_NUM_OF_CUSTOMER,
     DOWN_NUM_OF_CUSTOMER,
     VALID_EDIT_NAME,
+    INVALID_EDIT_NAME,
     VALID_EDIT_PHONE_NUMBER,
+    INVALID_EDIT_PHONE_NUMBER,
     EDIT_DRINK,
 } from '../constants/constants'
 
@@ -39,6 +41,9 @@ export function downNumOfCustomer(){
 export function onEditName(name){
     return (dispatch) => {
         dispatch(validEditName(name))
+        if(name.length > 20){
+            dispatch(invalidEditName())
+        }
     }
 }
 
@@ -49,9 +54,18 @@ export function validEditName(name){
     }
 }
 
+export function invalidEditName(){
+    return{
+        type: INVALID_EDIT_NAME
+    }
+}
+
 export function onEditPhoneNumber(phone){
     return (dispatch) => {
         dispatch(validEditPhoneNumber(phone))
+        if(phone.length !== 10 || !phone.startsWith("0")){
+            dispatch(invalidEditPhoneNumber())
+        }
     }
 }
 
@@ -59,6 +73,12 @@ export function validEditPhoneNumber(phone){
     return{
         type: VALID_EDIT_PHONE_NUMBER,
         phone,
+    }
+}
+
+export function invalidEditPhoneNumber(){
+    return{
+        type: INVALID_EDIT_PHONE_NUMBER
     }
 }
 

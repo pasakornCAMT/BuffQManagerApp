@@ -9,12 +9,62 @@ import {
     RECORD_PRICE,
     CLEAR_FORM,
     NOT_EMPTY_NAME,
+    VALID_PHONE_NUMBER,
+    INVALID_PHONE_NUMBER,
+    INVALID_NAME,
+    VALID_NAME,
 } from '../constants/constants'
+
+export function validateName(name){
+    return (dispatch) => {
+        dispatch(inputName(name))
+        if(name.length > 20){
+            dispatch(invalidName())
+        }else{
+            dispatch(validName())
+        }
+    }
+}
+
+export function invalidName(){
+    return {
+        type: INVALID_NAME
+    }
+}
+
+export function validName(){
+    return {
+        type: VALID_NAME
+    }
+}
 
 export function inputName(name){
     return{
         type: INPUT_NAME,
         name
+    }
+}
+
+export function validatePhoneNumber(phone){
+    return (dispatch) => {
+        dispatch(inputPhoneNumber(phone))
+        if(phone.length == 10 && phone.startsWith("0")){
+            dispatch(validPhoneNumber())
+        }else{
+            dispatch(invalidPhoneNumber())
+        }
+    }
+}
+
+export function validPhoneNumber(){
+    return{
+        type: VALID_PHONE_NUMBER
+    }
+}
+
+export function invalidPhoneNumber(){
+    return{
+        type: INVALID_PHONE_NUMBER
     }
 }
 

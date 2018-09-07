@@ -9,6 +9,10 @@ import {
     RECORD_PRICE,
     CLEAR_FORM,
     NOT_EMPTY_NAME,
+    VALID_PHONE_NUMBER,
+    INVALID_PHONE_NUMBER,
+    INVALID_NAME,
+    VALID_NAME,
 } from '../constants/constants'
 import moment from 'moment';
 
@@ -31,7 +35,8 @@ const addBookingState = {
     phoneNumber: '',
     drink: false,
     price: 0,
-    invaildPhone: true,
+    invalidPhone: true,
+    invalidName: false,
 }
 
 export default function addBookingReducer(state = addBookingState, action) {
@@ -86,8 +91,30 @@ export default function addBookingReducer(state = addBookingState, action) {
                 name: '',
                 phoneNumber: '',
                 drink: false,
-                price: 0
-            }        
+                price: 0,
+                invalidPhone: true,
+                invalidName: false,
+            }
+        case VALID_PHONE_NUMBER:
+            return {
+                ...state,
+                invalidPhone: false
+            }
+        case INVALID_PHONE_NUMBER:
+            return {
+                ...state,
+                invalidPhone: true
+            }
+        case INVALID_NAME:
+            return {
+                ...state,
+                invalidName: true,
+            }
+        case VALID_NAME:
+            return {
+                ...state,
+                invalidName: false,
+            }
         default:
             return state
 
