@@ -15,7 +15,7 @@ import {
 import FirebaseService from '../services/firebase-service'
 
 const currentResId = '0'
-const currentDate = '13-8-2018'
+const currentDate = '9-9-2018'
 const restaurantBookings = FirebaseService.child('restaurantBookings')
 const allBookingsRef = FirebaseService.child('bookings').child('users').child('1')
 

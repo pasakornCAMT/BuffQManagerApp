@@ -22,7 +22,7 @@ let mintime = hours + ':' + minutes
 
 const addBookingState = {
     dateText: mindate,
-    timeText: '',
+    timeText: mintime,
     numOfCustomer: 1,
     numOfAdult: 1,
     numOfChild: 0,
