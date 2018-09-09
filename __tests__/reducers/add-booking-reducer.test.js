@@ -9,11 +9,16 @@ import {
     RECORD_PRICE,
 } from '../../src/constants/constants'
 import addBookingReducer from '../../src/reducers/add-booking-reducer';
+import moment from 'moment';
 
 let date = new Date().getDate();
 let month = new Date().getMonth() + 1;
 let year = new Date().getFullYear();
 let mindate = date + '-' + month + '-' + year;
+
+let hours = moment().hours()
+let minutes = moment().minutes()
+let mintime = hours + ':' + minutes
 
 const addBookingState = {
     dateText: mindate,
@@ -39,14 +44,16 @@ describe('Test add-booking-reducer', () => {
         //Assert
         expect(result).toEqual({
             dateText: mindate,
-            timeText: '',
+            timeText: mintime,
             numOfCustomer: 1,
             numOfAdult: 1,
             numOfChild: 0,
             name: '',
             phoneNumber: '',
             drink: false,
-            price: 0
+            price: 0,
+            invalidPhone: true,
+            invalidName: false,
         })
     })
     it('calls INPUT_NAME', () => {
