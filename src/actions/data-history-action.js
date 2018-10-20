@@ -7,14 +7,14 @@ import {
 import FirebaseService from '../services/firebase-service'
 
 export function fetchDataHistoryFromFirebase(){
-    var resId = '0'
+    var resId = FirebaseService.auth().currentUser.uid;
     var waiting = []
     var eating = []
     var total = []
     return (dispatch) => {
         dispatch(getDataHistory())
         try {
-            FirebaseService.child('data-history').child(resId).on('value',(dataSnap)=>{
+            FirebaseService.database().ref().child('data-history').child(resId).on('value',(dataSnap)=>{
                 if(dataSnap.val() == null){
                     dispatch(noDataHistory())
                 }else{

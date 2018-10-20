@@ -9,8 +9,8 @@ export function fetchTableLayoutFromFirebase(){
     return (dispatch) => {
         dispatch(getTableLayout())
         try {
-            resId = '0'
-            FirebaseService.child('tables').child(resId).on('value',(snap)=>{
+            resId = FirebaseService.auth().currentUser.uid;
+            FirebaseService.database().ref().child('tables').child(resId).on('value',(snap)=>{
                 dispatch(getTableLayoutSuccess(snap.val()))
             })
         } catch (error) {

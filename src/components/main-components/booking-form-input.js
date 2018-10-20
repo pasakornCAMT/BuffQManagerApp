@@ -22,7 +22,7 @@ import {
 
 class BookingFormInput extends Component {
     onPressConfirm() {
-        const { addBooking } = this.props
+        const { addBooking } = this.props 
         const hasChild = this.props.restaurant.restaurant.childPrice
         const hasDrink = this.props.restaurant.restaurant.drink
         const { id } = this.props.restaurant.restaurant

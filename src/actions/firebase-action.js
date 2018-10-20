@@ -12,7 +12,8 @@ let pressDate = days[new Date().getDay()] + ' ' + date + '-' + month + '-' + yea
 export function insertNewBookingToFirebase(booking, hasChild, hasDrink, resId, price) {
     const userId = '0'
     console.log('new booking: ', booking)
-    const bookingRef = FirebaseService.child('bookings').child('users').child('1')
+    //const bookingRef = FirebaseService.database().ref().child('bookings').child('users').child('1')
+    const bookingRef = FirebaseService.database().ref().child('bookings').child('online')
     insertBooking = {
         customer: booking.name,
         phone: booking.phoneNumber,
@@ -25,6 +26,7 @@ export function insertNewBookingToFirebase(booking, hasChild, hasDrink, resId, p
         pressDate: pressDate,
         numOfCustomer: booking.numOfCustomer,
         status: 'booking',
+        status_dateText_resId: 'booking_'+booking.dateText+'_'+booking.restaurantId,
         type: 'walkIn'
     }
     if (hasDrink) {
@@ -41,23 +43,25 @@ export function insertNewBookingToFirebase(booking, hasChild, hasDrink, resId, p
         bookingRef.child(key).update({
             id: key
         })
-        FirebaseService.child('restaurantBookings').child(resId).child(key).set(true)
+        FirebaseService.database().ref().child('restaurantBookings').child(resId).child(key).set(true)
     } catch (error) {
 
     }
 }
 export function closeRestaurant() {
-    FirebaseService.child('restaurants').child('0').update({
+    resId = FirebaseService.auth().currentUser.uid;
+    FirebaseService.database().ref().child('restaurants').child(resId).update({
         status: 'close'
     })
 }
 export function openRestaurant() {
-    FirebaseService.child('restaurants').child('0').update({
+    resId = FirebaseService.auth().currentUser.uid;
+    FirebaseService.database().ref().child('restaurants').child(resId).update({
         status: 'open'
     })
 }
 export function assignBookingToTable(booking, table) {
-    const resId = '0'
+    const resId = FirebaseService.auth().currentUser.uid;
     data = {
         bookingId: '',
         customer: '',
@@ -72,19 +76,19 @@ export function assignBookingToTable(booking, table) {
             available: false
         }
     }
-    FirebaseService.child('tables').child(resId).child(table.id).update(data)
+    FirebaseService.database().ref().child('tables').child(resId).child(table.id).update(data)
 }
 
 export function changeStatusToEating(id) {
-    FirebaseService.child('bookings').child('users').child('1').child(id).update({
+    FirebaseService.database().ref().child('bookings').child('online').child(id).update({
         status: 'eating',
         startEating: getCurrentTime()
     })
 }
 
 export function resetAssign(tableId) {
-    const resId = '0'
-    FirebaseService.child('tables').child(resId).child(tableId).update({
+    const resId = FirebaseService.auth().currentUser.uid;
+    FirebaseService.database().ref().child('tables').child(resId).child(tableId).update({
         available: true,
         bookingId: '',
         customer: '',
@@ -94,21 +98,27 @@ export function resetAssign(tableId) {
 
 export function changeStatusWhenPressNext(booking) {
     console.log('bookingId: ',booking.id)
-    const bookingRef = FirebaseService.child('bookings').child('users').child('1').child(booking.id);
+    // const bookingRef = FirebaseService.database().ref().child('bookings').child('users').child('1').child(booking.id);
+    const bookingRef = FirebaseService.database().ref().child('bookings').child('online').child(booking.id);
+
     var data = {
         status: '',
+        status_dateText_resId: ''
     }
     switch (booking.status) {
         case 'booking':
             data.status = 'arriving'
+            data.status_dateText_resId = 'arriving_'+booking.dateText+'_'+booking.restaurantId
             data.startArriving = getCurrentTime()
             break;
         case 'arriving':
             data.status = 'eating'
+            data.status_dateText_resId = 'eating_'+booking.dateText+'_'+booking.restaurantId
             data.startEating = getCurrentTime()
             break;
         case 'eating':
             data.status = 'finishing'
+            data.status_dateText_resId = 'finishing_'+booking.dateText+'_'+booking.restaurantId
             data.finishTime = getCurrentTime()
             data.waitingTime = calculateLengthTime(booking.startEating, booking.startArriving)
             data.eatingTime = calculateLengthTime(getCurrentTime(), booking.startEating)
@@ -124,19 +134,23 @@ export function changeStatusWhenPressNext(booking) {
 }
 
 export function changeStatusWhenPressBack(booking) {
-    const bookingRef = FirebaseService.child('bookings').child('users').child('1').child(booking.id);
+    // const bookingRef = FirebaseService.database().ref().child('bookings').child('users').child('1').child(booking.id);
+    const bookingRef = FirebaseService.database().ref().child('bookings').child('online').child(booking.id);
     var data = {
         status: '',
     }
     switch (booking.status) {
         case 'arriving':
             data.status = 'booking'
+            data.status_dateText_resId = 'booking_'+booking.dateText+'_'+booking.restaurantId
             break;
         case 'eating':
             data.status = 'arriving'
+            data.status_dateText_resId = 'arriving_'+booking.dateText+'_'+booking.restaurantId
             break;
         case 'finishing':
             data.status = 'eating'
+            data.status_dateText_resId = 'eating_'+booking.dateText+'_'+booking.restaurantId
             break;
         default:
             data.status = booking.status
@@ -157,7 +171,7 @@ export function calculateLengthTime(time1, time2) {
 }
 
 export function insertToDataHistory(booking, finishTime, waitingTime, eatingTime) {
-    const historyRef = FirebaseService.child('data-history').child('0')
+    const historyRef = FirebaseService.database().ref().child('data-history').child(booking.restaurantId)
     const historyData = {
         bookingId: booking.id,
         startArriving: booking.startArriving,
@@ -176,8 +190,8 @@ export function insertToDataHistory(booking, finishTime, waitingTime, eatingTime
 }
 
 export function setTableToAvailableByBookingId(bookingId) {
-    resId = '0'
-    const tablesRef = FirebaseService.child('tables').child(resId)
+    resId = FirebaseService.auth().currentUser.uid;
+    const tablesRef = FirebaseService.database().ref().child('tables').child(resId)
     tablesRef.on('value', (snap) => {
         var tables = snap.val()
         Object.values(tables).map((table) => {
@@ -194,23 +208,45 @@ export function setTableToAvailableByBookingId(bookingId) {
 }
 
 export function updateBookingIntoFirebase(booking, updatedData){
-    const bookingRef = FirebaseService.child('bookings').child('users').child('1').child(booking.id)
+    const bookingRef = FirebaseService.database().ref().child('bookings').child('online').child(booking.id)
     bookingRef.update(updatedData)
 }
 
 export function removeBookingFromFirebase(id){
-    //FirebaseService.child('bookings').child('users').child('1').child('aaa').remove()
+    //FirebaseService.database().ref().child('bookings').child('users').child('1').child('aaa').remove()
 }
 
 export function getBookingFromId(id){
     try {
-        FirebaseService.child('bookings').child('users').child('1').child(id).on('valud',(snap)=>{
+        FirebaseService.database().ref().child('bookings').child('online').child(id).on('value',(snap)=>{
             return snap.val()
         })  
     } catch (error) {
         
     }
 
+}
+
+//Authentication
+
+export function login(email, password) {
+    try {
+        return FirebaseService.auth().signInWithEmailAndPassword(email, password).then(() => {
+            FirebaseService.auth().onAuthStateChanged(function (manager) {
+                console.log('manager: ', manager);
+            });
+        }).catch((error) => {
+            const { code, message } = error;
+            console.log('code: ', code)
+            console.log('message: ', message)
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export function logout() {
+    FirebaseService.auth().signOut();
 }
 
 

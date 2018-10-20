@@ -1,65 +1,70 @@
 import React, { Component } from 'react';
-import { View, StyleSheet} from 'react-native';
-import {connect} from 'react-redux';
-import { Button, Text, Divider} from 'react-native-elements'
+import { View, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
+import { Button, Text, Divider } from 'react-native-elements'
 import RestaurantFormData from '../main-components/restaurant-form-data';
-import { closeRestaurant, openRestaurant } from '../../actions/firebase-action'
+import { closeRestaurant, openRestaurant, logout } from '../../actions/firebase-action'
 
 class RestaurantDetail extends Component {
 
-  openRestaurant(){
+  openRestaurant() {
     openRestaurant()
   }
 
-  closeRestaurant(){
+  closeRestaurant() {
     closeRestaurant()
   }
 
   render() {
-    const {restaurant} = this.props.restaurant
+    const { restaurant } = this.props.restaurant
     return (
       <View style={styles.container}>
         <Text h4>Console</Text>
-        <Divider style={styles.divider}/>
+        <Divider style={styles.divider} />
         {
           restaurant.status == 'open' ? (
             <Button
-            title = 'Close Restaurant'
-            backgroundColor = 'red'
-            color = 'white'
-            onPress = {this.closeRestaurant.bind(this)}
+              title='Close Restaurant'
+              backgroundColor='red'
+              color='white'
+              onPress={this.closeRestaurant.bind(this)}
             />
-          ):(
-            <Button
-            title = 'Open Restaurant'
-            backgroundColor = '#00ff85'
-            color = '#38003c'
-            onPress = {this.openRestaurant.bind(this)}
-            />
-          )
+          ) : (
+              <Button
+                title='Open Restaurant'
+                backgroundColor='#00ff85'
+                color='#38003c'
+                onPress={this.openRestaurant.bind(this)}
+              />
+            )
         }
-
-        <RestaurantFormData restaurant={restaurant}/>
+        <RestaurantFormData restaurant={restaurant} />
+        <Button
+          title='Logout'
+          backgroundColor='red'
+          color='white'
+          onPress={()=>logout()}
+        />
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-    container:{
-      padding: 10,
-      backgroundColor: 'white',
-      marginTop: 15,
-      elevation:2
-    },
-    divider:{
-      marginVertical: 5,
-      backgroundColor: '#ccc'
-    }
+  container: {
+    padding: 10,
+    backgroundColor: 'white',
+    marginTop: 15,
+    elevation: 2
+  },
+  divider: {
+    marginVertical: 5,
+    backgroundColor: '#ccc'
+  }
 });
 
-function mapStateToProps(state){
-  return{
+function mapStateToProps(state) {
+  return {
     restaurant: state.restaurant
   }
 }

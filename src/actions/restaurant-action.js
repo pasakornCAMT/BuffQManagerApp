@@ -6,12 +6,17 @@ import {
 } from '../constants/constants'
 import FirebaseService from '../services/firebase-service'
 
+export function getCurrentRestaurant(){
+    const res = FirebaseService.auth().currentUser;
+    return res;
+}
+
 export function fetchRestaurantFromFirebase(){
     return (dispatch) =>{
         dispatch(getRestaunrant())
         try {
-            const restaurantId = '0'
-            FirebaseService.child('restaurants').child(restaurantId).on('value',(snap)=>{
+            const res = getCurrentRestaurant();
+            FirebaseService.database().ref().child('restaurants').child(res.uid).on('value',(snap)=>{
                 console.log('snap: ',snap.val());
                 
                 if(snap.val() == null){

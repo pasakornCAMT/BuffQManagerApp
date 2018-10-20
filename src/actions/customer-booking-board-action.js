@@ -15,56 +15,58 @@ import {
 import FirebaseService from '../services/firebase-service'
 
 const currentResId = '0'
-const currentDate = '9-9-2018'
-const restaurantBookings = FirebaseService.child('restaurantBookings')
-const allBookingsRef = FirebaseService.child('bookings').child('users').child('1')
+const currentDate = '30-9-2018'
+const restaurantBookings = FirebaseService.database().ref().child('restaurantBookings')
+const allBookingsRef = FirebaseService.database().ref().child('bookings').child('users').child('1')
 
-export function getAll(){
+export function getAll() {
   var all = []
-  fetchAllBooking(currentResId, snap => Promise.all([snap.val()]).then((val)=>{
+  fetchAllBooking(currentResId, snap => Promise.all([snap.val()]).then((val) => {
     console.log(val)
     all.push(val[0])
-    console.log('re: ',all)
+    console.log('re: ', all)
   }))
 }
-export function fetchAllBooking(resId,column,cd) {
+export function fetchAllBooking(resId, column, cd) {
   restaurantBookings.child(resId).on('child_added', (snap) => {
-      let bookingsRef = allBookingsRef.child(snap.key);
-      bookingsRef.once('value', cd)
-    })
+    let bookingsRef = allBookingsRef.child(snap.key);
+    bookingsRef.once('value', cd)
+  })
 }
 
 export function fetchBookingFromFirebase() {
-  //getAll()
+  ////getAll()
   return (dispatch) => {
+    var bookingIdList = [];
     dispatch(getBookingList())
     try {
-      FirebaseService.child('bookings').child('users').child('1')
-        .orderByChild('status').equalTo('booking').on('value', (snap) => {
+      const res = FirebaseService.auth().currentUser;
+      FirebaseService.database().ref().child('bookings').child('online')
+        .orderByChild('status_dateText_resId').equalTo('booking_' + currentDate + '_' + res.uid).on('value', (snap) => {
           if (snap.val() == null) {
             dispatch(noBookingList())
           } else {
             var data = []
             snap.forEach(booking => {
-              if(booking.val().dateText == currentDate){
+              if (booking.val().dateText == currentDate) {
                 data.push(booking.val())
               }
             })
-            console.log('result: ',data)
+            console.log('result: ', data)
             dispatch(getBookingListSuccess(data))
           }
         })
-      // var all = []
-      // var text = 'booking'
-      // fetchAllBooking(currentResId,text, snap => Promise.all([snap.val()]).then((val)=>{
-      //   all.push(val[0])
-      //   dispatch(getBookingListSuccess(all))
-      // }))
+      //// var all = []
+      //// var text = 'booking'
+      ////  fetchAllBooking(currentResId,text, snap => Promise.all([snap.val()]).then((val)=>{
+      //// all.push(val[0])
+      //// dispatch(getBookingListSuccess(all))
+      //// }))
     } catch (e) {
       dispatch(getBookingListFailure())
     }
   }
-  
+
 }
 
 export function getBookingList() {
@@ -95,14 +97,15 @@ export function noBookingList() {
 export function fetchArrivingFromFirebase() {
   return (dispatch) => {
     try {
-      FirebaseService.child('bookings').child('users').child('1')
-        .orderByChild('status').equalTo('arriving').on('value', (snap) => {
+      const res = FirebaseService.auth().currentUser;
+      FirebaseService.database().ref().child('bookings').child('online')
+        .orderByChild('status_dateText_resId').equalTo('arriving_' + currentDate + '_' + res.uid).on('value', (snap) => {
           if (snap.val() == null) {
             dispatch(noArrivingList())
           } else {
             var data = []
             snap.forEach(booking => {
-              if(booking.val().dateText == currentDate){
+              if (booking.val().dateText == currentDate) {
                 data.push(booking.val())
               }
             })
@@ -131,14 +134,15 @@ export function getArrivingListSuccess(arrivings) {
 export function fetchEatingFromFirebase() {
   return (dispatch) => {
     try {
-      FirebaseService.child('bookings').child('users').child('1')
-        .orderByChild('status').equalTo('eating').on('value', (snap) => {
+      const res = FirebaseService.auth().currentUser;
+      FirebaseService.database().ref().child('bookings').child('online')
+        .orderByChild('status_dateText_resId').equalTo('eating_'+currentDate+'_'+res.uid).on('value', (snap)=>{  
           if (snap.val() == null) {
             dispatch(noEatingList())
           } else {
             var data = []
             snap.forEach(booking => {
-              if(booking.val().dateText == currentDate){
+              if (booking.val().dateText == currentDate) {
                 data.push(booking.val())
               }
             })
@@ -167,14 +171,15 @@ export function getEatingListSuccess(eatings) {
 export function fetchFinishingFromFirebase() {
   return (dispatch) => {
     try {
-      FirebaseService.child('bookings').child('users').child('1')
-        .orderByChild('status').equalTo('finishing').on('value', (snap) => {
+      const res = FirebaseService.auth().currentUser;
+      FirebaseService.database().ref().child('bookings').child('online')
+        .orderByChild('status_dateText_resId').equalTo('finishing_'+currentDate+'_'+res.uid).on('value', (snap)=>{  
           if (snap.val() == null) {
             dispatch(noFinishingList())
           } else {
             var data = []
             snap.forEach(booking => {
-              if(booking.val().dateText == currentDate){
+              if (booking.val().dateText == currentDate) {
                 data.push(booking.val())
               }
             })
@@ -200,28 +205,35 @@ export function getFinishingListSuccess(finishings) {
   }
 }
 
-export function fetchWalkInFromFirebase(){
+export function fetchWalkInFromFirebase() {
   return (dispatch) => {
     dispatch(getWalkInList())
     try {
-      FirebaseService.child('bookings').child('walk-in').on('value',(snap)=>{
+      FirebaseService.database().ref().child('bookings').child('walk-in').on('value', (snap) => {
         dispatch(getWalkInListSuccess(snap.val()))
       })
     } catch (error) {
-      
+
     }
   }
 }
 
-export function getWalkInList(){
-  return{
+export function getWalkInList() {
+  return {
     type: FETCHING_WALK_IN_LIST
   }
 }
 
-export function getWalkInListSuccess(walkInList){
-  return{
+export function getWalkInListSuccess(walkInList) {
+  return {
     type: FETCHING_WALK_IN_LIST_SUCCESS,
     walkInList,
   }
+}
+
+function filterColumn(array, status) {
+  var filtered = array.filter((item) => {
+    return item.status == status
+  });
+  return filtered;
 }
