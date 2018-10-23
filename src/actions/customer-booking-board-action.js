@@ -14,30 +14,14 @@ import {
 } from '../constants/constants'
 import FirebaseService from '../services/firebase-service'
 
-const currentResId = '0'
-const currentDate = '30-9-2018'
-const restaurantBookings = FirebaseService.database().ref().child('restaurantBookings')
-const allBookingsRef = FirebaseService.database().ref().child('bookings').child('users').child('1')
+let date = new Date().getDate();
+let month = new Date().getMonth() + 1;
+let year = new Date().getFullYear();
 
-export function getAll() {
-  var all = []
-  fetchAllBooking(currentResId, snap => Promise.all([snap.val()]).then((val) => {
-    console.log(val)
-    all.push(val[0])
-    console.log('re: ', all)
-  }))
-}
-export function fetchAllBooking(resId, column, cd) {
-  restaurantBookings.child(resId).on('child_added', (snap) => {
-    let bookingsRef = allBookingsRef.child(snap.key);
-    bookingsRef.once('value', cd)
-  })
-}
+const currentDate = date+'-'+month+'-'+year
 
 export function fetchBookingFromFirebase() {
-  ////getAll()
   return (dispatch) => {
-    var bookingIdList = [];
     dispatch(getBookingList())
     try {
       const res = FirebaseService.auth().currentUser;
@@ -56,12 +40,6 @@ export function fetchBookingFromFirebase() {
             dispatch(getBookingListSuccess(data))
           }
         })
-      //// var all = []
-      //// var text = 'booking'
-      ////  fetchAllBooking(currentResId,text, snap => Promise.all([snap.val()]).then((val)=>{
-      //// all.push(val[0])
-      //// dispatch(getBookingListSuccess(all))
-      //// }))
     } catch (e) {
       dispatch(getBookingListFailure())
     }

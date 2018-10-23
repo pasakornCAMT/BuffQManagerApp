@@ -128,6 +128,7 @@ export function changeStatusWhenPressNext(booking) {
             break;
         default:
             data.status = booking.status
+            data.status_dateText_resId = booking.status+'_'+booking.dateText+'_'+booking.restaurantId
             break;
     }
     bookingRef.update(data);
@@ -154,6 +155,7 @@ export function changeStatusWhenPressBack(booking) {
             break;
         default:
             data.status = booking.status
+            data.status_dateText_resId = booking.status+'_'+booking.dateText+'_'+booking.restaurantId
             break;
     }
     bookingRef.update(data);
