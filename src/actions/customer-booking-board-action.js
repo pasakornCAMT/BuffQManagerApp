@@ -18,12 +18,18 @@ let date = new Date().getDate();
 let month = new Date().getMonth() + 1;
 let year = new Date().getFullYear();
 
-const currentDate = date+'-'+month+'-'+year
+export var currentDate = date+'-'+month+'-'+year
+
+export function setDate(date){
+  console.log(date)
+  currentDate = date
+}
 
 export function fetchBookingFromFirebase() {
   return (dispatch) => {
     dispatch(getBookingList())
     try {
+      console.log('sss ',currentDate)
       const res = FirebaseService.auth().currentUser;
       FirebaseService.database().ref().child('bookings').child('online')
         .orderByChild('status_dateText_resId').equalTo('booking_' + currentDate + '_' + res.uid).on('value', (snap) => {

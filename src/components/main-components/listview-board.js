@@ -40,12 +40,12 @@ class ListViewBoard extends Component {
   }
 
   onPressNext(booking) {
-    if(booking.status == 'arriving'){
+    if (booking.status == 'arriving') {
       this.props.assignTable(booking)
-    }else{
+    } else {
       changeStatusWhenPressNext(booking)
     }
-    
+
   }
 
   onPressBack(booking) {

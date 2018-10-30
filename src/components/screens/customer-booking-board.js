@@ -10,8 +10,9 @@ import {
   Alert
 } from 'react-native';
 import { setBookingDetailState, } from '../../actions/booking-detail-action'
-import { fetchRestaurantFromFirebase} from '../../actions/restaurant-action'
+import { fetchRestaurantFromFirebase } from '../../actions/restaurant-action'
 import { fetchTableLayoutFromFirebase } from '../../actions/table-layout-action'
+import BookingBoardDate from '../main-components/booking-board-date-picker';
 
 class CustomerBookingBoard extends Component {
   componentWillMount() {
@@ -34,6 +35,7 @@ class CustomerBookingBoard extends Component {
   render() {
     return (
       <View style={styles.container}>
+      <BookingBoardDate/>
         <ListViewBoard
           onPressBookingItem={this.onPressBookingItem.bind(this)}
           assignTable={this.navigateToTableLayout.bind(this)}
