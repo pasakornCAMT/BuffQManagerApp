@@ -5,6 +5,7 @@ import {
     NO_DATA_HISTORY,
 } from '../constants/constants'
 import FirebaseService from '../services/firebase-service'
+import { currentDate } from './customer-booking-board-action';
 
 export function fetchDataHistoryFromFirebase(){
     var resId = FirebaseService.auth().currentUser.uid;
@@ -14,7 +15,8 @@ export function fetchDataHistoryFromFirebase(){
     return (dispatch) => {
         dispatch(getDataHistory())
         try {
-            FirebaseService.database().ref().child('data-history').child(resId).on('value',(dataSnap)=>{
+            FirebaseService.database().ref().child('data-history').child(resId)
+            .orderByChild('dateText').equalTo(currentDate).on('value',(dataSnap)=>{
                 if(dataSnap.val() == null){
                     dispatch(noDataHistory())
                 }else{

@@ -9,7 +9,7 @@ class DataHistory extends Component {
         this.props.fetchDataHistoryFromFirebase()
     }
     render() {
-        const { dataHistory, avgWaitingTime, avgEatingTime, avgTotalTime } = this.props.dataHistory
+        const { dataHistory, avgWaitingTime, avgEatingTime, avgTotalTime, isNoData } = this.props.dataHistory
         return (
             <ScrollView>
                 <View>
@@ -38,13 +38,15 @@ class DataHistory extends Component {
                     </View>
                     <List containerStyle={{ marginBottom: 20 }}>
                         {
-                            Object.values(dataHistory).map((l) => (
-                                <ListItem
-                                    key={l.id}
-                                    title={l.finishTime}
-                                    subtitle={'Booking date_time: '+l.dateText_timeText}
-                                />
-                            ))
+                            !isNoData ? (
+                                Object.values(dataHistory).map((l) => (
+                                    <ListItem
+                                        key={l.id}
+                                        title={l.finishTime}
+                                        subtitle={'Booking date_time: ' + l.dateText_timeText}
+                                    />
+                                ))
+                            ) : null
                         }
                     </List>
                 </View>
@@ -77,7 +79,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
     },
     unitText: {
-        fontWeight: 'bold', 
+        fontWeight: 'bold',
         color: 'white',
         paddingTop: 5,
         bottom: 0,

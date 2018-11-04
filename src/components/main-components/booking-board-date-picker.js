@@ -7,20 +7,24 @@ import {
     setDate, 
     fetchBookingFromFirebase, 
     fetchArrivingFromFirebase, 
-    fetchFinishingFromFirebase 
+    fetchFinishingFromFirebase, 
+    fetchEatingFromFirebase
 } from '../../actions/customer-booking-board-action';
+import { fetchDataHistoryFromFirebase } from '../../actions/data-history-action';
 
 class BookingBoardDate extends Component {
     changeDate(date){
         setDate(date);
         this.props.fetchBookingFromFirebase();
         this.props.fetchArrivingFromFirebase();
+        this.props.fetchEatingFromFirebase();
         this.props.fetchFinishingFromFirebase();
+        this.props.fetchDataHistoryFromFirebase();
     }
     render() {
         return (
             <DatePicker
-                style={{ width: '50%', paddingVertical: 10, }}
+                style={{ width: '50%', paddingTop: 10, }}
                 mode="date"
                 date={currentDate}
                 androidMode="spinner"
@@ -62,6 +66,7 @@ function mapDispatchToProps(dispatch) {
       fetchEatingFromFirebase: () => dispatch(fetchEatingFromFirebase()),
       fetchFinishingFromFirebase: () => dispatch(fetchFinishingFromFirebase()),
       fetchWalkInFromFirebase: () => dispatch(fetchWalkInFromFirebase()),
+      fetchDataHistoryFromFirebase: () => dispatch(fetchDataHistoryFromFirebase()),
     }
   }
 
