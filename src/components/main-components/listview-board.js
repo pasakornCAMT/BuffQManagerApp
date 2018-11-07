@@ -14,18 +14,19 @@ import {
   View,
   Text,
   ListView,
-  ScrollView,
+  ScrollView, 
   ActivityIndicator,
 } from 'react-native';
-import { changeStatusWhenPressNext, changeStatusWhenPressBack } from '../../actions/firebase-action';
+import { changeStatusWhenPressNext, changeStatusWhenPressBack, miningDataHistory } from '../../actions/firebase-action';
 
 class ListViewBoard extends Component {
 
   componentWillMount() {
     this.props.fetchBookingFromFirebase();
-    this.props.fetchArrivingFromFirebase();
+    this.props.fetchArrivingFromFirebase(); 
     this.props.fetchEatingFromFirebase();
     this.props.fetchFinishingFromFirebase();
+    //miningDataHistory({numOfCustomer: 1, timeText: '17:00'})
     //this.props.fetchWalkInFromFirebase();
   }
 

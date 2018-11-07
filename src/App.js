@@ -14,12 +14,12 @@ export default class App extends Component {
     })
   }
 
-  componentWillMount(){
+  componentWillMount() {
     FirebaseService.auth().onAuthStateChanged((user) => {
       this.setState({ isUserAuthenticated: !!user, isAppReady: true });
     })
   }
-  
+
   render() {
     const { isAppReady, isUserAuthenticated } = this.state;
     return (
@@ -27,10 +27,10 @@ export default class App extends Component {
         isUserAuthenticated ? (
           <Router />
         ) : (
-            <Login/>
+            <Login />
           )
       ) : (
-          <InitialApp/>
+          <InitialApp />
         )
     )
   }
