@@ -26,7 +26,7 @@ export function insertNewBookingToFirebase(booking, hasChild, hasDrink, resId, p
         pressDate: pressDate,
         numOfCustomer: booking.numOfCustomer,
         status: 'booking',
-        status_dateText_resId: 'booking_'+booking.dateText+'_'+booking.restaurantId,
+        status_dateText_resId: 'booking_'+booking.dateText+'_'+resId,
         type: 'walkIn'
     }
     if (hasDrink) {
@@ -176,6 +176,8 @@ export function insertToDataHistory(booking, finishTime, waitingTime, eatingTime
     const historyRef = FirebaseService.database().ref().child('data-history').child(booking.restaurantId)
     const historyData = {
         bookingId: booking.id,
+        customer: booking.customer,
+        phone: booking.phone,
         startArriving: booking.startArriving,
         waitingTime: waitingTime,
         startEating: booking.startEating,
