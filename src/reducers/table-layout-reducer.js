@@ -2,12 +2,14 @@ import {
     FETCHING_TABLE,
     FETCHING_TABLE_SUCCESS,
     FETCHING_TABLE_FAILURE,
+    GET_SUGGEST_TABLES_SUCCESS
 } from '../constants/constants'
 
 const tableLayoutState = {
     tableLayout: [],
     isFetching: false,
     isError: false,
+    suggestTables: []
 }
 
 export default function tableLayoutReducer(state = tableLayoutState, action){
@@ -19,6 +21,7 @@ export default function tableLayoutReducer(state = tableLayoutState, action){
             }
         case FETCHING_TABLE_SUCCESS:
             return{
+                ...state,
                 tableLayout: action.tableLayout,
                 isFetching: false,
                 isError: false,
@@ -27,7 +30,12 @@ export default function tableLayoutReducer(state = tableLayoutState, action){
             return{
                 ...state,
                 isError: true
-            }        
+            }
+        case GET_SUGGEST_TABLES_SUCCESS:
+            return{
+                ...state,
+                suggestTables: action.tables
+            }            
         default:
             return state
     }

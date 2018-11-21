@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 class TablesGrid extends Component {
     render() {
-        const { tableLayout } = this.props.tableLayout
+        const { tableLayout, suggestTables } = this.props.tableLayout
         return (
             <GridView
                 itemDimension={100}

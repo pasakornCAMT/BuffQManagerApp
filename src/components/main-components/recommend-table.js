@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Alert } from 'react-native';
 import { connect } from 'react-redux';
+import { getSuggestTables } from '../../actions/table-layout-action';
 
 class RecommendTable extends Component {
     componentWillMount(){
-        this.generateTable()
+        //this.generateTable()
+        this.props.getSuggestTables();
     }
     generateTable(){
         const {tableLayout} = this.props.tableLayout
@@ -33,7 +35,7 @@ class RecommendTable extends Component {
         return text
     }
     render() {
-        const {tableLayout} = this.props
+        const {suggestTables} = this.props.tableLayout
         const {numOfCustomer} = this.props.bookingDetail
         return (
             <View style={styles.container}>
@@ -46,6 +48,19 @@ class RecommendTable extends Component {
                         <Text style={styles.tableFont}>Table2</Text>
                     </View>
                 </View>
+                <View style={{ flexDirection: 'row' }}>
+                    <View style={styles.tableBorder}>
+                        <Text style={styles.tableFont}>Table3</Text>
+                    </View>
+                    <View style={styles.tableBorder}>
+                        <Text style={styles.tableFont}>Table4</Text>
+                    </View>
+                </View>
+                {/* {
+                    Object.values(suggestTables).map((table) => (
+                        <Text>{table.seat}</Text>
+                    ))
+                } */}
             </View>
         );
     }
@@ -65,6 +80,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 5,
         margin: 5,
+        width: 70,
     },
     tableFont:{
         fontSize: 18,
@@ -78,4 +94,10 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(RecommendTable)
+function mapDispatchToProps(dispatch) {
+    return {
+        getSuggestTables: () => dispatch(getSuggestTables())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RecommendTable)
