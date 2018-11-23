@@ -42,12 +42,12 @@ class TablesLayout extends Component {
         return (
             <ScrollView>
                 <View style={styles.container}>
-                    <RecommendTable/>
                     <TablesGrid onPressTableItem={this.onPressTableItem.bind(this)} />
                     <Button
                         title = 'Move to Eating'
                         onPress = {this.onPressConfirm.bind(this)}
                     />
+                    <RecommendTable/>
                 </View>
             </ScrollView>
         );

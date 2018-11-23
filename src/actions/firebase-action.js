@@ -22,7 +22,7 @@ export function insertNewBookingToFirebase(booking, hasChild, hasDrink, resId, p
         dateText_timeText: booking.dateText + '_' + booking.timeText,
         payment: false,
         totalPrice: price,
-        resId: resId,
+        restaurantId: resId,
         pressDate: pressDate,
         numOfCustomer: booking.numOfCustomer,
         status: 'booking',

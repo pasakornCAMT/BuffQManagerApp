@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Alert } from 'react-native';
 import { connect } from 'react-redux';
-import { getSuggestTables } from '../../actions/table-layout-action';
+import { getSuggestTables, fetchMergeTables } from '../../actions/table-layout-action';
 
 class RecommendTable extends Component {
     componentWillMount(){
@@ -40,7 +40,7 @@ class RecommendTable extends Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.header}>Recommend Table </Text>
-                <View style={{ flexDirection: 'row' }}>
+                {/* <View style={{ flexDirection: 'row' }}>
                     <View style={styles.tableBorder}>
                         <Text style={styles.tableFont}>Table1</Text>
                     </View>
@@ -55,12 +55,22 @@ class RecommendTable extends Component {
                     <View style={styles.tableBorder}>
                         <Text style={styles.tableFont}>Table4</Text>
                     </View>
-                </View>
-                {/* {
-                    Object.values(suggestTables).map((table) => (
-                        <Text>{table.seat}</Text>
-                    ))
-                } */}
+                </View> */}
+                
+                    {
+                        suggestTables.map((set)=>(
+                            <View style={{ flexDirection: 'row' }}>
+                                {
+                                    Object.values(set).map((table, key) => (
+                                        <View style={styles.tableBorder} key= {key}>
+                                            <Text style={styles.tableFont}>Table: {table.table}</Text>
+                                        </View>
+                                    ))
+                                }
+                            </View>
+                        ))
+                    }
+
             </View>
         );
     }
@@ -80,7 +90,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 5,
         margin: 5,
-        width: 70,
+        width: 90,
     },
     tableFont:{
         fontSize: 18,
