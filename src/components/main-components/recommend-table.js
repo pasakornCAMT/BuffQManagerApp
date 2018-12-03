@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import { getSuggestTables, fetchMergeTables } from '../../actions/table-layout-action';
 
 class RecommendTable extends Component {
-    componentWillMount(){
+    componentDidMount(){
         //this.generateTable()
-        this.props.getSuggestTables();
+        const {numOfCustomer} = this.props.bookingDetail
+        this.props.getSuggestTables(numOfCustomer);
     }
     generateTable(){
         const {tableLayout} = this.props.tableLayout
@@ -40,26 +41,11 @@ class RecommendTable extends Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.header}>Recommend Table </Text>
-                {/* <View style={{ flexDirection: 'row' }}>
-                    <View style={styles.tableBorder}>
-                        <Text style={styles.tableFont}>Table1</Text>
-                    </View>
-                    <View style={styles.tableBorder}>
-                        <Text style={styles.tableFont}>Table2</Text>
-                    </View>
-                </View>
-                <View style={{ flexDirection: 'row' }}>
-                    <View style={styles.tableBorder}>
-                        <Text style={styles.tableFont}>Table3</Text>
-                    </View>
-                    <View style={styles.tableBorder}>
-                        <Text style={styles.tableFont}>Table4</Text>
-                    </View>
-                </View> */}
+                <Text>{numOfCustomer}</Text>
                 
                     {
-                        suggestTables.map((set)=>(
-                            <View style={{ flexDirection: 'row' }}>
+                        suggestTables.map((set,key__1)=>(
+                            <View style={{ flexDirection: 'row' }} key={key__1}>
                                 {
                                     Object.values(set).map((table, key) => (
                                         <View style={styles.tableBorder} key= {key}>
@@ -106,7 +92,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        getSuggestTables: () => dispatch(getSuggestTables())
+        getSuggestTables: (numOfCustomer) => dispatch(getSuggestTables(numOfCustomer))
     }
 }
 

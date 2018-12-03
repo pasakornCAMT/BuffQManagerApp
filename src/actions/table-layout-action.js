@@ -39,14 +39,14 @@ export function getTableLayoutFailure(){
     }
 }
 
-export function getSuggestTables(){
+export function getSuggestTables(numOfCustomer){
     return (dispatch) =>{
         try {
             resId = FirebaseService.auth().currentUser.uid;
             FirebaseService.database().ref().child('tables').child(resId)
             .orderByChild('bookingId').equalTo('').once('value',(snap)=>{
                 console.log(snap.val())
-                var filterTable = subset_sum(snap.val(),8);
+                var filterTable = subset_sum(snap.val(),numOfCustomer);
                 dispatch(getSuggestTablesSuccess(filterTable));
             })
         } catch (error) {
@@ -100,7 +100,11 @@ function subset_sum (tables, num) {
           }
           run = false;
         }
-      i++;
+        if(i == max-1){
+            run = false;
+        }else{
+            i++;
+        }
     }
     return result;
 }
