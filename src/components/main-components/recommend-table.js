@@ -41,8 +41,6 @@ class RecommendTable extends Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.header}>Recommend Table </Text>
-                <Text>{numOfCustomer}</Text>
-                
                     {
                         suggestTables.map((set,key__1)=>(
                             <View style={{ flexDirection: 'row' }} key={key__1}>

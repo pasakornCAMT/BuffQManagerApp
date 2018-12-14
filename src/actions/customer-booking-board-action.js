@@ -29,7 +29,7 @@ export function fetchBookingFromFirebase() {
     dispatch(getBookingList())
     try {
       const res = FirebaseService.auth().currentUser;
-      FirebaseService.database().ref().child('bookings').child('online')
+        FirebaseService.database().ref().child('bookings').child('online')
         .orderByChild('status_dateText_resId').equalTo('booking_' + currentDate + '_' + res.uid).on('value', (snap) => {
           if (snap.val() == null) {
             dispatch(noBookingList())
